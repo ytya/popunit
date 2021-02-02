@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es5",
+    "module": "es2015",
+    "outDir": "dist",
+
+    "lib": [
+      "dom",
+      "es2020"
+    ],
+    "types": ["node"],
+    "strict": true,
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src"]
+}
