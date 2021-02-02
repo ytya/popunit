@@ -58,7 +58,7 @@ declare module 'dataframe-js' {
 
     // outerJoin(dfToJoin: any, columnNames: any): any;
 
-    // push(...args: any[]): any;
+    push(...args: any[]): DataFrame
 
     // reduce(func: any, init: any): any;
 

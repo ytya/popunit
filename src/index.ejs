@@ -38,26 +38,17 @@
   </div>
 
   <!-- 属性選択 -->
+  <% let attrs = ['花', '炎', '雪', '天', '虹', '光', '海', '闇', '空', '風', '月', '夢', '雷', '星', '愛'] %>
   <div class="container flex-row">
     <div class="label-attr">
       属性1
     </div>
     <div class="flex-attr">
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="flower"><label class="btn-attr">花</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="fire"><label class="btn-attr">炎</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="snow"><label class="btn-attr">雪</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="heaven"><label class="btn-attr">天</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="rainbow"><label class="btn-attr">虹</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="light"><label class="btn-attr">光</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="ocean"><label class="btn-attr">海</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="darkness"><label class="btn-attr">闇</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="sky"><label class="btn-attr">空</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="wind"><label class="btn-attr">風</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="moon"><label class="btn-attr">月</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="dream"><label class="btn-attr">夢</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="thunder"><label class="btn-attr">雷</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="star"><label class="btn-attr">星</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr1" value="love"><label class="btn-attr">愛</label></div>
+      <% for (let value of attrs) { %>
+        <div class="col-attr">
+          <input type="checkbox" class="check-attr" name="check-attr1" value="<%= value %>"><label class="btn-attr"><%= value %></label>
+        </div>        
+      <% } %>
     </div>
   </div>
   <div class="container flex-row">
@@ -65,21 +56,23 @@
       属性2
     </div>
     <div class="flex-attr">
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="flower"><label class="btn-attr">花</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="fire"><label class="btn-attr">炎</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="snow"><label class="btn-attr">雪</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="heaven"><label class="btn-attr">天</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="rainbow"><label class="btn-attr">虹</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="light"><label class="btn-attr">光</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="ocean"><label class="btn-attr">海</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="darkness"><label class="btn-attr">闇</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="sky"><label class="btn-attr">空</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="wind"><label class="btn-attr">風</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="moon"><label class="btn-attr">月</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="dream"><label class="btn-attr">夢</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="thunder"><label class="btn-attr">雷</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="star"><label class="btn-attr">星</label></div>
-      <div class="col-attr"><input type="checkbox" class="check-attr" name="check-attr2" value="love"><label class="btn-attr">愛</label></div>
+      <% for (let value of attrs) { %>
+        <div class="col-attr">
+          <input type="checkbox" class="check-attr" name="check-attr2" value="<%= value %>"><label class="btn-attr"><%= value %></label>
+        </div>        
+      <% } %>
+    </div>
+  </div>
+  <div class="container flex-row">
+    <div class="label-attr">
+      属性3
+    </div>
+    <div class="flex-attr">
+      <% for (let value of attrs) { %>
+        <div class="col-attr">
+          <input type="checkbox" class="check-attr" name="check-attr3" value="<%= value %>"><label class="btn-attr"><%= value %></label>
+        </div>        
+      <% } %>
     </div>
   </div>
 
@@ -90,9 +83,9 @@
           <th data-id="idol1">アイドル1</th>
           <th data-id="idol2">アイドル2</th>
           <th data-id="idol3">アイドル3</th>
-          <th data-id="Vo" sortable>Vo</th>
-          <th data-id="Da" sortable>Da</th>
-          <th data-id="Vi" sortable>Vi</th>
+          <th data-id="vo" sortable>Vo</th>
+          <th data-id="da" sortable>Da</th>
+          <th data-id="vi" sortable>Vi</th>
         </tr>
       </thead>
       <tbody>
