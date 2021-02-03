@@ -6,6 +6,7 @@
  * Made By MaterializeCSS.com
  */
 
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400&display=swap');
 @import '../../node_modules/materialize-css/sass/materialize.scss';
 
 $colors: (
@@ -18,7 +19,22 @@ $colors: (
   sidem-main: #47c299,
   sidem-sub: #d2eae3,
   shiny-main: #74a4fd,
-  shiny-sub: #d8e1f1
+  shiny-sub: #d8e1f1,
+  attr-floew: #f78abb,
+  attr-fire: #f1a419,
+  attr-snow: #63c9fe,
+  attr-heaven: #f56f0e,
+  attr-rainbow: #da2826,
+  attr-light: #facc00,
+  attr-ocean: #3b64be,
+  attr-darkness: #6b4879,
+  attr-sky: #949bb2,
+  attr-wind: #3ab862,
+  attr-moon: #5f90ff,
+  attr-dream: #bbbfca,
+  attr-thunder: #f9bd26,
+  attr-star: #f8a000,
+  attr-love: #da4443
 );
 
 @function colors($key) {
@@ -35,6 +51,8 @@ $colors: (
   height: auto;
   white-space: nowrap;
   overflow: hidden;
+  padding: 0.1rem;
+  font-weight: bold;
 }
 
 .check-brand:checked + .btn-brand-765as,
@@ -130,11 +148,61 @@ $colors: (
   width: 32.4px;
   height: 32.4px;
   line-height: 32.4px;
-  font-size: 13px;
   padding: 0 0;
+  font-size: 22px;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  text-shadow: 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
+    0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
+    0 0 3px white, 0 0 3px white;
 }
 
-.icon-block {
+.btn-attr-flower {
+  color: colors(attr-floew);
+}
+.btn-attr-fire {
+  color: colors(attr-fire);
+}
+.btn-attr-snow {
+  color: colors(attr-snow);
+}
+.btn-attr-heaven {
+  color: colors(attr-heaven);
+}
+.btn-attr-rainbow {
+  color: colors(attr-rainbow);
+}
+.btn-attr-light {
+  color: colors(attr-light);
+}
+.btn-attr-ocean {
+  color: colors(attr-ocean);
+}
+.btn-attr-darkness {
+  color: colors(attr-darkness);
+}
+.btn-attr-sky {
+  color: colors(attr-sky);
+}
+.btn-attr-wind {
+  color: colors(attr-wind);
+}
+.btn-attr-moon {
+  color: colors(attr-moon);
+}
+.btn-attr-dream {
+  color: colors(attr-dream);
+}
+.btn-attr-thunder {
+  color: colors(attr-thunder);
+}
+.btn-attr-star {
+  color: colors(attr-star);
+}
+.btn-attr-love {
+  color: colors(attr-love);
+}
+
+.btn .icon-block {
   padding: 0 15px;
 }
 .icon-block .material-icons {

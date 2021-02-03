@@ -14,23 +14,23 @@
   <!-- ブランド選択 -->
   <div class="container">
     <div class="row">
-      <div class="col col-brand s6 m4 l2 offset-l1">
+      <div class="col col-brand s6 m4 l4 xl2 offset-xl1">
         <input type="checkbox" class="check-brand" value="765AS">
         <label class="btn-small btn-brand btn-brand-765as" >アイドルマスター</label>
       </div>
-      <div class="col col-brand s6 m4 l2">
+      <div class="col col-brand s6 m4 l4 xl2">
         <input type="checkbox" class="check-brand" value="シンデレラガールズ">
         <label class="btn-small btn-brand btn-brand-cinderella" >シンデレラガールズ</label>
       </div>
-      <div class="col col-brand s6 m4 l2">
+      <div class="col col-brand s6 m4 l4 xl2">
         <input type="checkbox" class="check-brand" value="ミリオンライブ">
         <label class="btn-small btn-brand btn-brand-million" >ミリオンライブ</label>
       </div>
-      <div class="col col-brand s6 m4 l2">
+      <div class="col col-brand s6 m4 l4 xl2">
         <input type="checkbox" class="check-brand" value="SideM">
         <label class="btn-small btn-brand btn-brand-sidem" >SideM</label>
       </div>
-      <div class="col col-brand s6 m4 l2">
+      <div class="col col-brand s6 m4 l4 xl2">
         <input type="checkbox" class="check-brand" value="シャイニーカラーズ">
         <label class="btn-small btn-brand btn-brand-shiny" >シャイニーカラーズ</label>
       </div>
@@ -38,15 +38,15 @@
   </div>
 
   <!-- 属性選択 -->
-  <% let attrs = ['花', '炎', '雪', '天', '虹', '光', '海', '闇', '空', '風', '月', '夢', '雷', '星', '愛'] %>
+  <% let attrs = [['flower', '花'], ['fire', '炎'], ['snow', '雪'], ['heaven', '天'], ['rainbow', '虹'], ['light', '光'], ['ocean', '海'], ['darkness', '闇'], ['sky', '空'], ['wind', '風'], ['moon', '月'], ['dream', '夢'], ['thunder', '雷'], ['star', '星'], ['love', '愛']] %>
   <div class="container flex-row">
     <div class="label-attr">
       属性1
     </div>
     <div class="flex-attr">
-      <% for (let value of attrs) { %>
+      <% for (let attr of attrs) { %>
         <div class="col-attr">
-          <input type="checkbox" class="check-attr" name="check-attr1" value="<%= value %>"><label class="btn-attr"><%= value %></label>
+          <input type="checkbox" class="check-attr" name="check-attr1" value="<%= attr[1] %>"><label class="btn-attr btn-attr-<%= attr[0] %>"><%= attr[1] %></label>
         </div>        
       <% } %>
     </div>
@@ -56,9 +56,9 @@
       属性2
     </div>
     <div class="flex-attr">
-      <% for (let value of attrs) { %>
+      <% for (let attr of attrs) { %>
         <div class="col-attr">
-          <input type="checkbox" class="check-attr" name="check-attr2" value="<%= value %>"><label class="btn-attr"><%= value %></label>
+          <input type="checkbox" class="check-attr" name="check-attr2" value="<%= attr[1] %>"><label class="btn-attr btn-attr-<%= attr[0] %>"><%= attr[1] %></label>
         </div>        
       <% } %>
     </div>
@@ -68,9 +68,9 @@
       属性3
     </div>
     <div class="flex-attr">
-      <% for (let value of attrs) { %>
+      <% for (let attr of attrs) { %>
         <div class="col-attr">
-          <input type="checkbox" class="check-attr" name="check-attr3" value="<%= value %>"><label class="btn-attr"><%= value %></label>
+          <input type="checkbox" class="check-attr" name="check-attr3" value="<%= attr[1] %>"><label class="btn-attr btn-attr-<%= attr[0] %>"><%= attr[1] %></label>
         </div>        
       <% } %>
     </div>
