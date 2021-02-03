@@ -2,7 +2,10 @@ import M from 'materialize-css'
 import '../css/style.scss'
 import { DataFrame, Row } from 'dataframe-js'
 import idolData from './idol-data.json'
-import SortableTable from '@riversun/sortable-table'
+import SortableTable, { ColmnConf } from '@riversun/sortable-table'
+
+// idol-data.json
+// [{"brand": "765AS", "name": "天海春香", "color": "#e22b30", "attr": "花海", "Vo": 90, "Da": 70, "Vi": 80}]
 
 interface IdolTableDict {
   idol1: string
@@ -15,6 +18,7 @@ interface IdolTableDict {
 
 interface IdolInfo {
   name: string
+  attr: string
   vo: number
   da: number
   vi: number
@@ -27,6 +31,7 @@ const dfIdol = new DataFrame(idolData, null)
 const getIdolInfo = (row: Row): IdolInfo => {
   return {
     name: row.get('name') as string,
+    attr: row.get('attr') as string,
     vo: row.get('Vo') as number,
     da: row.get('Da') as number,
     vi: row.get('Vi') as number,
@@ -42,7 +47,7 @@ const selectIdol = (brands: string[], attr: string): DataFrame => {
     return (row.get('attr') as string).includes(attr)
   })
   if (df.dim()[0] == 0) {
-    df = df.push(['-', '-', '#000000', '-', 0, 0, 0])
+    df = df.push(['-', '-', '#000000', '', 0, 0, 0])
   }
   return df
 }
@@ -73,9 +78,9 @@ const collectUnit = (brands: string[], attr1: string, attr2: string, attr3: stri
 
         // ユニット追加
         unitData.push({
-          idol1: idol1.name,
-          idol2: idol2.name,
-          idol3: idol3.name,
+          idol1: idol1.name + ' ' + idol1.attr,
+          idol2: idol2.name + ' ' + idol2.attr,
+          idol3: idol3.name + ' ' + idol3.attr,
           vo: idol1.vo + idol2.vo + idol3.vo,
           da: idol1.da + idol2.da + idol3.da,
           vi: idol1.vi + idol2.vi + idol3.vi,
@@ -87,7 +92,7 @@ const collectUnit = (brands: string[], attr1: string, attr2: string, attr3: stri
 }
 
 // onLoad
-window.addEventListener('load', (loadEvent) => {
+window.addEventListener('load', () => {
   // ブランドボタン
   const btnBrands = document.getElementsByClassName('btn-brand') as HTMLCollectionOf<HTMLElement>
   const checkBrands = document.getElementsByClassName('check-brand') as HTMLCollectionOf<HTMLInputElement>
@@ -107,6 +112,49 @@ window.addEventListener('load', (loadEvent) => {
   // テーブル初期化
   const sortableTable = new SortableTable()
   sortableTable.setTable(tableIdol)
+  sortableTable.setCellRenderer((col: ColmnConf, row: any) => {
+    const colValue = String(row[col.id])
+    if (typeof colValue === 'undefined') {
+      return `<th></th>`
+    }
+
+    // ヘッダー
+    if (col.isHeader) {
+      return `<th>${colValue}</th>`
+    }
+
+    // アイドル名以外
+    if (!col.id.includes('idol')) {
+      return `<td>${colValue}</td>`
+    }
+
+    // 属性の色を変更
+    let name = colValue.slice(0, -3)
+    let attr = colValue
+      .slice(-2)
+      .replace('花', '<span class="text-attr-flower">花</span>')
+      .replace('炎', '<span class="text-attr-fire">炎</span>')
+      .replace('雪', '<span class="text-attr-snow">雪</span>')
+      .replace('天', '<span class="text-attr-heaven">天</span>')
+      .replace('虹', '<span class="text-attr-rainbow">虹</span>')
+      .replace('光', '<span class="text-attr-light">光</span>')
+      .replace('海', '<span class="text-attr-ocean">海</span>')
+      .replace('闇', '<span class="text-attr-darkness">闇</span>')
+      .replace('空', '<span class="text-attr-sky">空</span>')
+      .replace('風', '<span class="text-attr-wind">風</span>')
+      .replace('月', '<span class="text-attr-moon">月</span>')
+      .replace('夢', '<span class="text-attr-dream">夢</span>')
+      .replace('雷', '<span class="text-attr-thunder">雷</span>')
+      .replace('星', '<span class="text-attr-star">星</span>')
+      .replace('愛', '<span class="text-attr-love">愛</span>')
+    if (attr == '- ') {
+      attr = ''
+      name = '-'
+    } else {
+      attr = `<span class="text-attr-background">${attr}</span>`
+    }
+    return `<td>${attr} ${name}</td>`
+  })
 
   // ブランド取得
   const getBrands = () => {

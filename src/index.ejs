@@ -7,8 +7,6 @@
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
   <!-- ブランド選択 -->
@@ -37,47 +35,56 @@
     </div>
   </div>
 
+  <!-- <svg>
+    <text x="5" y="25" class="text-border">花</text>
+    <text x="5" y="25" class="text">花</text>
+  </svg> -->
+
   <!-- 属性選択 -->
-  <% let attrs = [['flower', '花'], ['fire', '炎'], ['snow', '雪'], ['heaven', '天'], ['rainbow', '虹'], ['light', '光'], ['ocean', '海'], ['darkness', '闇'], ['sky', '空'], ['wind', '風'], ['moon', '月'], ['dream', '夢'], ['thunder', '雷'], ['star', '星'], ['love', '愛']] %>
+  <% let attrs = [['flower', '花'], ['sky', '空'], ['fire', '炎'], ['wind', '風'],['snow', '雪'], ['moon', '月'],['heaven', '天'], ['dream', '夢'], ['rainbow', '虹'], ['thunder', '雷'], ['light', '光'], ['star', '星'], ['ocean', '海'], ['love', '愛'], ['darkness', '闇']] %>
   <div class="container flex-row">
-    <div class="label-attr">
+    <div class="text-attr">
       属性1
     </div>
     <div class="flex-attr">
       <% for (let attr of attrs) { %>
         <div class="col-attr">
-          <input type="checkbox" class="check-attr" name="check-attr1" value="<%= attr[1] %>"><label class="btn-attr btn-attr-<%= attr[0] %>"><%= attr[1] %></label>
+          <input type="checkbox" class="check-attr" name="check-attr1" value="<%= attr[1] %>">
+          <label class="btn-attr btn-attr-<%= attr[0] %>"><%= attr[1] %></label>
+          </label>
         </div>        
       <% } %>
     </div>
   </div>
   <div class="container flex-row">
-    <div class="label-attr">
+    <div class="text-attr">
       属性2
     </div>
     <div class="flex-attr">
       <% for (let attr of attrs) { %>
         <div class="col-attr">
-          <input type="checkbox" class="check-attr" name="check-attr2" value="<%= attr[1] %>"><label class="btn-attr btn-attr-<%= attr[0] %>"><%= attr[1] %></label>
+          <input type="checkbox" class="check-attr" name="check-attr2" value="<%= attr[1] %>">
+          <label class="btn-attr btn-attr-<%= attr[0] %>"><%= attr[1] %></label>
         </div>        
       <% } %>
     </div>
   </div>
   <div class="container flex-row">
-    <div class="label-attr">
+    <div class="text-attr">
       属性3
     </div>
     <div class="flex-attr">
       <% for (let attr of attrs) { %>
         <div class="col-attr">
-          <input type="checkbox" class="check-attr" name="check-attr3" value="<%= attr[1] %>"><label class="btn-attr btn-attr-<%= attr[0] %>"><%= attr[1] %></label>
+          <input type="checkbox" class="check-attr" name="check-attr3" value="<%= attr[1] %>">
+          <label class="btn-attr btn-attr-<%= attr[0] %>"><%= attr[1] %></label>
         </div>        
       <% } %>
     </div>
   </div>
 
-  <div class="container sortable-table">
-    <table id="idol_table">
+  <div class="container sortable-table indigo lighten-5" style="margin-top: 1rem;">
+    <table id="idol_table" class="striped">
       <thead>
         <tr>
           <th data-id="idol1">アイドル1</th>

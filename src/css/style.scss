@@ -20,7 +20,7 @@ $colors: (
   sidem-sub: #d2eae3,
   shiny-main: #74a4fd,
   shiny-sub: #d8e1f1,
-  attr-floew: #f78abb,
+  attr-flower: #f78abb,
   attr-fire: #f1a419,
   attr-snow: #63c9fe,
   attr-heaven: #f56f0e,
@@ -41,6 +41,11 @@ $colors: (
   @return map-get($colors, $key);
 }
 
+// ページ全体
+body {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
 // ブランド
 .col.col-brand {
   padding: 0.25rem;
@@ -53,6 +58,7 @@ $colors: (
   overflow: hidden;
   padding: 0.1rem;
   font-weight: bold;
+  text-transform: none;
 }
 
 .check-brand:checked + .btn-brand-765as,
@@ -121,7 +127,7 @@ $colors: (
   align-items: center;
 }
 
-.label-attr {
+.text-attr {
   width: 4rem;
 }
 
@@ -135,29 +141,38 @@ $colors: (
   padding: 0.15rem;
 }
 
-.check-attr:checked + .btn-attr {
+.check-attr:checked + .btn-attr,
+.check-attr:not(:checked) + .btn-attr:hover {
   background-color: #f102af;
 }
-
 .check-attr:not(:checked) + .btn-attr {
   background-color: #b5b8bf;
 }
 
+// .text-attr-back {
+//   font-size: 22px;
+//   stroke: white;
+//   stroke-width: 1px;
+// }
+// .text-attr-front {
+//   font-size: 22px;
+//   fill: colors(attr-flower);
+// }
+
 .btn-attr {
   @extend .btn;
-  width: 32.4px;
-  height: 32.4px;
-  line-height: 32.4px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
   padding: 0 0;
-  font-size: 22px;
-  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 20px;
   text-shadow: 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
     0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
     0 0 3px white, 0 0 3px white;
 }
 
 .btn-attr-flower {
-  color: colors(attr-floew);
+  color: colors(attr-flower);
 }
 .btn-attr-fire {
   color: colors(attr-fire);
@@ -202,9 +217,72 @@ $colors: (
   color: colors(attr-love);
 }
 
-.btn .icon-block {
-  padding: 0 15px;
+// テーブル内の属性
+td,
+th {
+  padding: 10px 5px;
 }
-.icon-block .material-icons {
-  font-size: inherit;
+
+.text-attr-background {
+  display: inline-block;
+  background-color: gainsboro;
+  width: 3em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+  border-radius: 40%;
+}
+
+@mixin text-attr($attr-color) {
+  color: colors($attr-color);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  text-shadow: 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
+    0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
+    0 0 3px white, 0 0 3px white;
+}
+
+.text-attr-flower {
+  @include text-attr(attr-flower);
+}
+.text-attr-fire {
+  @include text-attr(attr-fire);
+}
+.text-attr-snow {
+  @include text-attr(attr-snow);
+}
+.text-attr-heaven {
+  @include text-attr(attr-heaven);
+}
+.text-attr-rainbow {
+  @include text-attr(attr-rainbow);
+}
+.text-attr-light {
+  @include text-attr(attr-light);
+}
+.text-attr-ocean {
+  @include text-attr(attr-ocean);
+}
+.text-attr-darkness {
+  @include text-attr(attr-darkness);
+}
+.text-attr-sky {
+  @include text-attr(attr-sky);
+}
+.text-attr-wind {
+  @include text-attr(attr-wind);
+}
+.text-attr-moon {
+  @include text-attr(attr-moon);
+}
+.text-attr-dream {
+  @include text-attr(attr-dream);
+}
+.text-attr-thunder {
+  @include text-attr(attr-thunder);
+}
+.text-attr-star {
+  @include text-attr(attr-star);
+}
+.text-attr-love {
+  @include text-attr(attr-love);
 }
