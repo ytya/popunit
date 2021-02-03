@@ -1,11 +1,8 @@
 import M from 'materialize-css'
 import '../css/style.scss'
 import { DataFrame, Row } from 'dataframe-js'
-import idolData from './idol-data.json'
 import SortableTable, { ColmnConf } from '@riversun/sortable-table'
-
-// idol-data.json
-// [{"brand": "765AS", "name": "天海春香", "color": "#e22b30", "attr": "花海", "Vo": 90, "Da": 70, "Vi": 80}]
+import { IdolDB, IdolInfo, UnitInfo } from './idol-db'
 
 interface IdolTableDict {
   idol1: string
@@ -16,79 +13,25 @@ interface IdolTableDict {
   vi: number
 }
 
-interface IdolInfo {
-  name: string
-  attr: string
-  vo: number
-  da: number
-  vi: number
-}
-
-// アイドルデータ読み込み
-const dfIdol = new DataFrame(idolData, null)
-
-// アイドル情報取得
-const getIdolInfo = (row: Row): IdolInfo => {
-  return {
-    name: row.get('name') as string,
-    attr: row.get('attr') as string,
-    vo: row.get('Vo') as number,
-    da: row.get('Da') as number,
-    vi: row.get('Vi') as number,
+/**
+ * ユニットリストをテーブル用オブジェクトに変換
+ *
+ * @param {UnitInfo[]} units - ユニットリスト
+ * @returns {IdolTableDict[]}
+ */
+const convertUnitInfo2TableDist = (units: UnitInfo[]): IdolTableDict[] => {
+  const dst: IdolTableDict[] = []
+  for (const unit of units) {
+    dst.push({
+      idol1: unit.idol1.name + ' ' + unit.idol1.attr,
+      idol2: unit.idol2.name + ' ' + unit.idol2.attr,
+      idol3: unit.idol3.name + ' ' + unit.idol3.attr,
+      vo: unit.vo,
+      da: unit.da,
+      vi: unit.vi,
+    })
   }
-}
-
-// アイドル選択
-const selectIdol = (brands: string[], attr: string): DataFrame => {
-  let df = dfIdol.where((row: Row) => {
-    if (brands.length != 0 && !brands.includes(row.get('brand') as string)) {
-      return false
-    }
-    return (row.get('attr') as string).includes(attr)
-  })
-  if (df.dim()[0] == 0) {
-    df = df.push(['-', '-', '#000000', '', 0, 0, 0])
-  }
-  return df
-}
-
-// アイドル選択
-const collectUnit = (brands: string[], attr1: string, attr2: string, attr3: string): IdolTableDict[] => {
-  const df1 = selectIdol(brands, attr1)
-  const df2 = selectIdol(brands, attr2)
-  const df3 = selectIdol(brands, attr3)
-  const height1 = df1.dim()[0]
-  const height2 = df2.dim()[0]
-  const height3 = df3.dim()[0]
-
-  // 全組み合わせを取得
-  const unitData: IdolTableDict[] = []
-  for (let i = 0; i < height1; i++) {
-    const idol1 = getIdolInfo(df1.getRow(i))
-    for (let j = 0; j < height2; j++) {
-      const idol2 = getIdolInfo(df2.getRow(j))
-      if (idol2.name != '-' && idol1.name == idol2.name) {
-        continue
-      }
-      for (let k = 0; k < height3; k++) {
-        const idol3 = getIdolInfo(df3.getRow(k))
-        if (idol3.name != '-' && (idol1.name == idol3.name || idol2.name == idol3.name)) {
-          continue
-        }
-
-        // ユニット追加
-        unitData.push({
-          idol1: idol1.name + ' ' + idol1.attr,
-          idol2: idol2.name + ' ' + idol2.attr,
-          idol3: idol3.name + ' ' + idol3.attr,
-          vo: idol1.vo + idol2.vo + idol3.vo,
-          da: idol1.da + idol2.da + idol3.da,
-          vi: idol1.vi + idol2.vi + idol3.vi,
-        })
-      }
-    }
-  }
-  return unitData
+  return dst
 }
 
 // onLoad
@@ -108,6 +51,9 @@ window.addEventListener('load', () => {
 
   // matelialize-css初期化
   M.AutoInit()
+
+  // アイドルDB構築
+  const idolDB = new IdolDB()
 
   // テーブル初期化
   const sortableTable = new SortableTable()
@@ -183,8 +129,9 @@ window.addEventListener('load', () => {
     const attr1 = getAttr(checkAttrs1)
     const attr2 = getAttr(checkAttrs2)
     const attr3 = getAttr(checkAttrs3)
-    const unitData = collectUnit(brands, attr1, attr2, attr3)
-    sortableTable.setData(unitData)
+    const units = idolDB.collectUnits(brands, attr1, attr2, attr3)
+    const tableData = convertUnitInfo2TableDist(units)
+    sortableTable.setData(tableData)
   }
 
   // ブランドボタンイベント
