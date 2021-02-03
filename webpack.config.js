@@ -10,7 +10,7 @@ module.exports = {
   mode: MODE,
 
   // メインとなるJavaScriptファイル（エントリーポイント）
-  entry: './src/ts/main.ts',
+  entry: './src/ts/index.ts',
 
   output: {
     path: path.resolve(__dirname, 'dist'),
