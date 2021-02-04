@@ -6,11 +6,22 @@ import idolData from './idol-data.json'
 
 export interface IdolInfo {
   name: string
+  brand: string
   attr: string
   vo: number
   da: number
   vi: number
 }
+
+export const COMPARE_KEY = {
+  NAME1: 'name1',
+  NAME2: 'name2',
+  NAME3: 'name3',
+  VO: 'vo',
+  DA: 'da',
+  VI: 'vi',
+}
+export type COMPARE_KEY = typeof COMPARE_KEY[keyof typeof COMPARE_KEY]
 
 export class UnitInfo {
   private _vo: number
@@ -46,6 +57,73 @@ export class UnitInfo {
   get vi(): number {
     return this._vi
   }
+
+  private compareName(other: UnitInfo, key: COMPARE_KEY): number {
+    if (key == COMPARE_KEY.NAME2) {
+      const c1 = this.idol2.name.localeCompare(other.idol2.name)
+      if (c1 != 0) {
+        return c1
+      }
+      const c2 = this.idol1.name.localeCompare(other.idol1.name)
+      if (c2 != 0) {
+        return c2
+      }
+      return this.idol3.name.localeCompare(other.idol3.name)
+    } else if (key == COMPARE_KEY.NAME3) {
+      const c1 = this.idol3.name.localeCompare(other.idol3.name)
+      if (c1 != 0) {
+        return c1
+      }
+      const c2 = this.idol1.name.localeCompare(other.idol1.name)
+      if (c2 != 0) {
+        return c2
+      }
+      return this.idol2.name.localeCompare(other.idol2.name)
+    } else {
+      const c1 = this.idol1.name.localeCompare(other.idol1.name)
+      if (c1 != 0) {
+        return c1
+      }
+      const c2 = this.idol2.name.localeCompare(other.idol2.name)
+      if (c2 != 0) {
+        return c2
+      }
+      return this.idol3.name.localeCompare(other.idol3.name)
+    }
+  }
+
+  public compare(other: UnitInfo, key: COMPARE_KEY): number {
+    switch (key) {
+      case COMPARE_KEY.NAME1:
+      case COMPARE_KEY.NAME2:
+      case COMPARE_KEY.NAME3:
+        return this.compareName(other, key)
+      case COMPARE_KEY.VO:
+        if (this.vo < other.vo) {
+          return -1
+        } else if (this.vo > other.vo) {
+          return 1
+        } else {
+          return this.compareName(other, COMPARE_KEY.NAME1)
+        }
+      case COMPARE_KEY.DA:
+        if (this.da < other.da) {
+          return -1
+        } else if (this.da > other.da) {
+          return 1
+        } else {
+          return this.compareName(other, COMPARE_KEY.NAME1)
+        }
+      default:
+        if (this.vi < other.vi) {
+          return -1
+        } else if (this.vi > other.vi) {
+          return 1
+        } else {
+          return this.compareName(other, COMPARE_KEY.NAME1)
+        }
+    }
+  }
 }
 
 /**
@@ -56,7 +134,8 @@ export class UnitInfo {
  */
 export class IdolDB {
   // 大元のアイドルデータ
-  private static readonly dfIdol = new DataFrame(idolData, null)
+  private static readonly _dfIdol = new DataFrame(idolData, null)
+  private _collectedUnits: UnitInfo[] = []
 
   /**
    * アイドル情報を取得
@@ -69,6 +148,7 @@ export class IdolDB {
   private getIdolInfoFromRow(row: Row): IdolInfo {
     return {
       name: row.get('name') as string,
+      brand: row.get('brand') as string,
       attr: row.get('attr') as string,
       vo: row.get('Vo') as number,
       da: row.get('Da') as number,
@@ -85,7 +165,7 @@ export class IdolDB {
    * @memberof IdolDB
    */
   public selectIdol(brands: string[], attr: string): DataFrame {
-    let df = IdolDB.dfIdol.where((row: Row) => {
+    let df = IdolDB._dfIdol.where((row: Row) => {
       if (brands.length != 0 && !brands.includes(row.get('brand') as string)) {
         return false
       }
@@ -135,6 +215,29 @@ export class IdolDB {
         }
       }
     }
+    this._collectedUnits = unitData
     return unitData
+  }
+
+  /**
+   * 取得済みのユニットをソート
+   *
+   * @param {COMPARE_KEY} sort_key
+   * @param {boolean} reverse - true:昇順 false:降順
+   * @returns {UnitInfo[]}
+   * @memberof IdolDB
+   */
+  public sortUnits(sort_key: COMPARE_KEY, reverse: boolean): UnitInfo[] {
+    // 比較関数決定
+    const compareFn = (a: UnitInfo, b: UnitInfo): number => {
+      return a.compare(b, sort_key)
+    }
+
+    // ソート
+    const sortedUnits = this._collectedUnits.slice().sort(compareFn)
+    if (reverse) {
+      return sortedUnits.reverse()
+    }
+    return sortedUnits
   }
 }

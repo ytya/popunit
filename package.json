@@ -38,7 +38,6 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "@riversun/sortable-table": "^1.1.2",
     "dataframe-js": "^1.4.4",
     "materialize-css": "^1.0.0"
   }

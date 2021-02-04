@@ -14,9 +14,11 @@ $colors: (
   765as-sub: #fcd7de,
   cinderella-main: #3a82c9,
   cinderella-sub: #d0e6f9,
-  million-main: #f9c100,
+  //million-main: #f9c100,
+  million-main: #f9a000,
   million-sub: #f3ecd2,
-  sidem-main: #47c299,
+  //sidem-main: #47c299,
+  sidem-main: #47c271,
   sidem-sub: #d2eae3,
   shiny-main: #74a4fd,
   shiny-sub: #d8e1f1,
@@ -221,6 +223,37 @@ body {
 td,
 th {
   padding: 10px 5px;
+}
+
+.btn-th {
+  @extend .btn-flat, .btn-small;
+  background-color: none;
+}
+.btn-th:hover {
+  @extend .btn-flat, .btn-small;
+  background-color: none;
+}
+.icon-sort-active {
+  color: black;
+}
+.icon-sort-deactive {
+  color: lightgray;
+}
+
+.text-brand-765as {
+  color: colors(765as-main);
+}
+.text-brand-cinderella {
+  color: colors(cinderella-main);
+}
+.text-brand-million {
+  color: colors(million-main);
+}
+.text-brand-sidem {
+  color: colors(sidem-main);
+}
+.text-brand-shiny {
+  color: colors(shiny-main);
 }
 
 .text-attr-background {
