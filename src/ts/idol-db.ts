@@ -6,6 +6,7 @@ import idolData from './idol-data.json'
 
 export interface IdolInfo {
   name: string
+  yomi: string
   brand: string
   attr: string
   vo: number
@@ -22,6 +23,14 @@ export const COMPARE_KEY = {
   VI: 'vi',
 }
 export type COMPARE_KEY = typeof COMPARE_KEY[keyof typeof COMPARE_KEY]
+
+const BRAND_ORDER: { [key: string]: number } = {
+  '765AS': 0,
+  シンデレラガールズ: 1,
+  ミリオンライブ: 2,
+  SideM: 3,
+  シャイニーカラーズ: 4,
+}
 
 export class UnitInfo {
   private _vo: number
@@ -58,53 +67,112 @@ export class UnitInfo {
     return this._vi
   }
 
-  private compareName(other: UnitInfo, key: COMPARE_KEY): number {
+  private compareBrand(other: UnitInfo, key: COMPARE_KEY): number {
     if (key == COMPARE_KEY.NAME2) {
-      const c1 = this.idol2.name.localeCompare(other.idol2.name)
-      if (c1 != 0) {
-        return c1
+      const o1 = BRAND_ORDER[this.idol2.brand]
+      const o2 = BRAND_ORDER[other.idol2.brand]
+      if (o1 < o2) {
+        return -1
+      } else if (o1 > o2) {
+        return 1
+      } else {
+        return 0
       }
-      const c2 = this.idol1.name.localeCompare(other.idol1.name)
-      if (c2 != 0) {
-        return c2
-      }
-      return this.idol3.name.localeCompare(other.idol3.name)
     } else if (key == COMPARE_KEY.NAME3) {
-      const c1 = this.idol3.name.localeCompare(other.idol3.name)
-      if (c1 != 0) {
-        return c1
+      const o1 = BRAND_ORDER[this.idol3.brand]
+      const o2 = BRAND_ORDER[other.idol3.brand]
+      if (o1 < o2) {
+        return -1
+      } else if (o1 > o2) {
+        return 1
+      } else {
+        return 0
       }
-      const c2 = this.idol1.name.localeCompare(other.idol1.name)
-      if (c2 != 0) {
-        return c2
-      }
-      return this.idol2.name.localeCompare(other.idol2.name)
     } else {
-      const c1 = this.idol1.name.localeCompare(other.idol1.name)
-      if (c1 != 0) {
-        return c1
+      const o1 = BRAND_ORDER[this.idol1.brand]
+      const o2 = BRAND_ORDER[other.idol1.brand]
+      if (o1 < o2) {
+        return -1
+      } else if (o1 > o2) {
+        return 1
+      } else {
+        return 0
       }
-      const c2 = this.idol2.name.localeCompare(other.idol2.name)
-      if (c2 != 0) {
-        return c2
-      }
-      return this.idol3.name.localeCompare(other.idol3.name)
     }
   }
 
-  public compare(other: UnitInfo, key: COMPARE_KEY): number {
+  private compareName(other: UnitInfo, key: COMPARE_KEY, isBrandSort = false): number {
+    if (isBrandSort) {
+      const c = this.compareBrand(other, key)
+      if (c != 0) {
+        return c
+      }
+    }
+    if (key == COMPARE_KEY.NAME2) {
+      return this.idol2.yomi.localeCompare(other.idol2.yomi)
+    } else if (key == COMPARE_KEY.NAME3) {
+      return this.idol3.yomi.localeCompare(other.idol3.yomi)
+    } else {
+      return this.idol1.yomi.localeCompare(other.idol1.yomi)
+    }
+  }
+
+  private compareUnitName(other: UnitInfo, key: COMPARE_KEY, isBrandSort = false): number {
+    if (key == COMPARE_KEY.NAME2) {
+      const c1 = this.compareName(other, COMPARE_KEY.NAME2, isBrandSort)
+      if (c1 != 0) {
+        return c1
+      }
+      const c2 = this.compareName(other, COMPARE_KEY.NAME1, isBrandSort)
+      if (c2 != 0) {
+        return c2
+      }
+      return this.compareName(other, COMPARE_KEY.NAME3, isBrandSort)
+    } else if (key == COMPARE_KEY.NAME3) {
+      const c1 = this.compareName(other, COMPARE_KEY.NAME3, isBrandSort)
+      if (c1 != 0) {
+        return c1
+      }
+      const c2 = this.compareName(other, COMPARE_KEY.NAME1, isBrandSort)
+      if (c2 != 0) {
+        return c2
+      }
+      return this.compareName(other, COMPARE_KEY.NAME2, isBrandSort)
+    } else {
+      const c1 = this.compareName(other, COMPARE_KEY.NAME1, isBrandSort)
+      if (c1 != 0) {
+        return c1
+      }
+      const c2 = this.compareName(other, COMPARE_KEY.NAME2, isBrandSort)
+      if (c2 != 0) {
+        return c2
+      }
+      return this.compareName(other, COMPARE_KEY.NAME3, isBrandSort)
+    }
+  }
+
+  /**
+   * ユニット間の順番比較
+   *
+   * @param {UnitInfo} other - 比較対象
+   * @param {COMPARE_KEY} key - 比較するkey
+   * @param {boolean} [isBrandSort=false] - ブランド順にするか
+   * @returns {number} - -1:this < other  0: this == other  1: this > other
+   * @memberof UnitInfo
+   */
+  public compare(other: UnitInfo, key: COMPARE_KEY, isBrandSort = false): number {
     switch (key) {
       case COMPARE_KEY.NAME1:
       case COMPARE_KEY.NAME2:
       case COMPARE_KEY.NAME3:
-        return this.compareName(other, key)
+        return this.compareUnitName(other, key, isBrandSort)
       case COMPARE_KEY.VO:
         if (this.vo < other.vo) {
           return -1
         } else if (this.vo > other.vo) {
           return 1
         } else {
-          return this.compareName(other, COMPARE_KEY.NAME1)
+          return this.compareUnitName(other, COMPARE_KEY.NAME1, isBrandSort)
         }
       case COMPARE_KEY.DA:
         if (this.da < other.da) {
@@ -112,7 +180,7 @@ export class UnitInfo {
         } else if (this.da > other.da) {
           return 1
         } else {
-          return this.compareName(other, COMPARE_KEY.NAME1)
+          return this.compareUnitName(other, COMPARE_KEY.NAME1, isBrandSort)
         }
       default:
         if (this.vi < other.vi) {
@@ -120,7 +188,7 @@ export class UnitInfo {
         } else if (this.vi > other.vi) {
           return 1
         } else {
-          return this.compareName(other, COMPARE_KEY.NAME1)
+          return this.compareUnitName(other, COMPARE_KEY.NAME1, isBrandSort)
         }
     }
   }
@@ -148,6 +216,7 @@ export class IdolDB {
   private getIdolInfoFromRow(row: Row): IdolInfo {
     return {
       name: row.get('name') as string,
+      yomi: row.get('yomi') as string,
       brand: row.get('brand') as string,
       attr: row.get('attr') as string,
       vo: row.get('Vo') as number,
@@ -172,7 +241,7 @@ export class IdolDB {
       return (row.get('attr') as string).includes(attr)
     })
     if (df.dim()[0] == 0) {
-      df = df.push(['-', '-', '#000000', '', 0, 0, 0])
+      df = df.push(['-', '-', '', '#000000', '', 0, 0, 0])
     }
     return df
   }
@@ -222,20 +291,21 @@ export class IdolDB {
   /**
    * 取得済みのユニットをソート
    *
-   * @param {COMPARE_KEY} sort_key
-   * @param {boolean} reverse - true:昇順 false:降順
+   * @param {COMPARE_KEY} sortKey
+   * @param {boolean} isBrandSort - ブランドソートをするか
+   * @param {boolean} isReverse - true:昇順 false:降順
    * @returns {UnitInfo[]}
    * @memberof IdolDB
    */
-  public sortUnits(sort_key: COMPARE_KEY, reverse: boolean): UnitInfo[] {
+  public sortUnits(sortKey: COMPARE_KEY, isBrandSort: boolean, isReverse: boolean): UnitInfo[] {
     // 比較関数決定
     const compareFn = (a: UnitInfo, b: UnitInfo): number => {
-      return a.compare(b, sort_key)
+      return a.compare(b, sortKey, isBrandSort)
     }
 
     // ソート
     const sortedUnits = this._collectedUnits.slice().sort(compareFn)
-    if (reverse) {
+    if (isReverse) {
       return sortedUnits.reverse()
     }
     return sortedUnits

@@ -47,6 +47,9 @@ $colors: (
 body {
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }
+.label {
+  font-size: 16px;
+}
 
 // ブランド
 .col.col-brand {
@@ -61,6 +64,7 @@ body {
   padding: 0.1rem;
   font-weight: bold;
   text-transform: none;
+  user-select: none;
 }
 
 .check-brand:checked + .btn-brand-765as,
@@ -167,6 +171,7 @@ body {
   height: 32px;
   line-height: 32px;
   padding: 0 0;
+  user-select: none;
   font-size: 20px;
   text-shadow: 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
     0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
@@ -220,18 +225,39 @@ body {
 }
 
 // テーブル内の属性
+.scroll-table-wrapper {
+  overflow-x: scroll;
+}
+.scroll-table {
+  width: 100%;
+}
+
 td,
 th {
-  padding: 10px 5px;
+  padding: 0.8rem 0.5rem;
+}
+
+.th-idol {
+  min-width: 10rem;
+}
+.th-status {
+  min-width: 1rem;
 }
 
 .btn-th {
   @extend .btn-flat, .btn-small;
   background-color: none;
+  user-select: none;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 0;
 }
 .btn-th:hover {
-  @extend .btn-flat, .btn-small;
-  background-color: none;
+  @extend .btn-th;
+}
+.btn i.icon-sort {
+  font-size: 0.8rem;
 }
 .icon-sort-active {
   color: black;

@@ -6,10 +6,11 @@ interface Column {
   isReverse: boolean
 }
 
-export class IdolTable {
+export class UnitTable {
   private _idolDB: IdolDB
   private _columns: Map<string, Column>
   private _theadElem: HTMLTableRowElement
+  private _isBrandSort: boolean
 
   constructor(private _tableElem: HTMLTableElement) {
     this._idolDB = new IdolDB()
@@ -21,16 +22,26 @@ export class IdolTable {
       ['da', { name: 'Da', isSort: false, isReverse: true }],
       ['vi', { name: 'Vi', isSort: false, isReverse: true }],
     ])
+    this._isBrandSort = false
 
     this._initThead()
     this._theadElem = this._tableElem.querySelector('thead tr') as HTMLTableRowElement
     this._updateThead()
   }
 
+  set isBrandSort(value: boolean) {
+    this._isBrandSort = value
+    this._sort()
+  }
+
   _initThead(): void {
     let thead = '<thead><tr>'
     this._columns.forEach((v: Column, k: string) => {
-      thead += `<th col-id="${k}">${v.name}</th>`
+      let th_class = 'th-status'
+      if (k.includes('idol')) {
+        th_class = 'th-idol'
+      }
+      thead += `<th col-id="${k}" class="${th_class}">${v.name}</th>`
     })
     thead += '</tr></thead>'
     this._tableElem.innerHTML = thead
@@ -64,9 +75,9 @@ export class IdolTable {
       let sortIcon = ''
       const sortActive = col.isSort ? 'icon-sort-active' : 'icon-sort-deactive'
       if (col.isReverse) {
-        sortIcon = `<i class="tiny material-icons ${sortActive}">arrow_upward</i>`
+        sortIcon = `<i class="material-icons icon-sort ${sortActive}">arrow_upward</i>`
       } else {
-        sortIcon = `<i class="tiny material-icons ${sortActive}">arrow_downward</i>`
+        sortIcon = `<i class="material-icons icon-sort ${sortActive}">arrow_downward</i>`
       }
       th.innerHTML = `<a class="btn-th">${col.name} ${sortIcon}</a>`
     }
@@ -102,7 +113,7 @@ export class IdolTable {
       isReverse = col.isReverse
       break
     }
-    const units = this._idolDB.sortUnits(sort_key, isReverse)
+    const units = this._idolDB.sortUnits(sort_key, this._isBrandSort, isReverse)
     this._update(units)
   }
 
@@ -117,6 +128,7 @@ export class IdolTable {
     let cellValue = ''
     let attr = ''
     let brand = ''
+    let td_class = 'cell-status'
     if (col_id == 'idol1') {
       cellValue = unit.idol1.name
       brand = unit.idol1.brand
@@ -159,6 +171,7 @@ export class IdolTable {
     }
     if (brand != '') {
       cellValue = `<span class="text-brand-${brand}">${cellValue}</span>`
+      td_class = 'td-idol'
     }
 
     // 属性表示
@@ -183,7 +196,7 @@ export class IdolTable {
       cellValue = attr + ' ' + cellValue
     }
 
-    return `<td>${cellValue}</td>`
+    return `<td class="${td_class}">${cellValue}</td>`
   }
 
   _update(units: UnitInfo[]): void {
@@ -210,7 +223,7 @@ export class IdolTable {
    * @param {string} attr1 - 一人目の属性
    * @param {string} attr2 - 二人目の属性
    * @param {string} attr3 - 三人目の属性
-   * @memberof IdolTable
+   * @memberof UnitTable
    */
   public update(brands: string[], attr1: string, attr2: string, attr3: string): void {
     this._idolDB.collectUnits(brands, attr1, attr2, attr3)

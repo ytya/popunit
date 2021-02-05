@@ -1,6 +1,6 @@
 import M from 'materialize-css'
 import '../css/style.scss'
-import { IdolTable } from './idol-table'
+import { UnitTable } from './unit-table'
 
 // onLoad
 window.addEventListener('load', () => {
@@ -15,13 +15,14 @@ window.addEventListener('load', () => {
   const checkAttrs3 = document.getElementsByName('check-attr3') as NodeListOf<HTMLInputElement>
 
   // アイドルテーブル
-  const tableIdol = document.getElementById('idol_table') as HTMLTableElement
+  const checkBrandSort = document.getElementById('check-brand-sort') as HTMLInputElement
+  const tableUnit = document.getElementById('table-unit') as HTMLTableElement
 
   // matelialize-css初期化
   M.AutoInit()
 
   // テーブル初期化
-  const idolTable = new IdolTable(tableIdol)
+  const unitTable = new UnitTable(tableUnit)
 
   // ブランド取得
   function getBrands() {
@@ -45,12 +46,12 @@ window.addEventListener('load', () => {
   }
 
   // アイドルリスト更新
-  const updateIdol = () => {
+  const updateUnit = () => {
     const brands = getBrands()
     const attr1 = getAttr(checkAttrs1)
     const attr2 = getAttr(checkAttrs2)
     const attr3 = getAttr(checkAttrs3)
-    idolTable.update(brands, attr1, attr2, attr3)
+    unitTable.update(brands, attr1, attr2, attr3)
   }
 
   // ブランドボタンイベント
@@ -61,7 +62,7 @@ window.addEventListener('load', () => {
       checkbox.checked = !checkbox.checked
 
       // テーブル更新
-      updateIdol()
+      updateUnit()
     }
   }
 
@@ -84,7 +85,12 @@ window.addEventListener('load', () => {
       }
 
       // テーブル更新
-      updateIdol()
+      updateUnit()
     }
+  }
+
+  // ブランドソート
+  checkBrandSort.onclick = () => {
+    unitTable.isBrandSort = checkBrandSort.checked
   }
 })
