@@ -148,6 +148,9 @@ export class UnitTable {
     } else if (col_id == 'vi') {
       cellValue = String(unit.vi)
     }
+    if (cellValue == '') {
+      cellValue = '-'
+    }
 
     // ブランド表示
     switch (brand) {

@@ -1,15 +1,13 @@
 declare module '*/idol-data.json' {
-  interface IdolData {
+  interface IdolInfo {
     brand: string
     name: string
     yomi: string
-    color: string
     attr: string
-    Vo: number
-    Da: number
-    Vi: number
+    vo: number
+    da: number
+    vi: number
   }
 
-  const value: IdolData
-  export = value
+  export const idolData: IdolInfo
 }

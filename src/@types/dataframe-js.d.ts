@@ -34,7 +34,7 @@ declare module 'dataframe-js' {
 
     // fillMissingValues(replacement: any, columnNames: any): any;
 
-    // filter(condition: any): any;
+    filter(condition: (row: Row) => boolean | Dictionary): DataFrame
 
     // find(condition: any): any;
 
@@ -114,7 +114,7 @@ declare module 'dataframe-js' {
 
     // unique(columnName: any): any;
 
-    where(condition: (row: Row) => boolean | Dictionary): DataFrame
+    // where(condition: (row: Row) => boolean | Dictionary): DataFrame
 
     // withColumn(columnName: any, ...args: any[]): any;
 
@@ -156,7 +156,7 @@ declare module 'dataframe-js' {
 
     // toArray(): any;
 
-    // toDict(): any;
+    toDict(): any
   }
 
   // export namespace DataFrame {
