@@ -1,5 +1,6 @@
 var path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const MODE = 'development';  // 'production' か 'development' を指定
 const enabledSourceMap = MODE === "development";  // ソースマップの利用有無
@@ -27,9 +28,10 @@ module.exports = {
         use: 'ts-loader',
       },
       {
-        test: /\.scss/,
+        test: /\.(sc|c|sa)ss$/,
         use: [
-          "style-loader",
+          //style-loader",
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
@@ -59,7 +61,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.ejs',
       filename: path.resolve(__dirname, 'dist', 'index.html')
-    })
+    }),
+    new MiniCssExtractPlugin()
   ],
   // import 文で .ts ファイルを解決するため
   // これを定義しないと import 文で拡張子を書く必要が生まれる。
