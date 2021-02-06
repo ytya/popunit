@@ -48,7 +48,7 @@ body {
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }
 .label {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 // ブランド
@@ -149,10 +149,10 @@ body {
 
 .check-attr:checked + .btn-attr,
 .check-attr:not(:checked) + .btn-attr:hover {
-  background-color: #f102af;
+  background-color: colors(shiny-main);
 }
 .check-attr:not(:checked) + .btn-attr {
-  background-color: #b5b8bf;
+  background-color: #edeef4;
 }
 
 // .text-attr-back {
@@ -173,9 +173,8 @@ body {
   padding: 0 0;
   user-select: none;
   font-size: 20px;
-  text-shadow: 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
-    0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
-    0 0 3px white, 0 0 3px white;
+  text-shadow: 1px 0 0 white, 1px 1px 0 white, 0 1px 0 white, -1px 1px 0 white, -1px 0 0 white, -1px -1px 0 white,
+    0 -1px 0 white, 1px -1px 0 white, 2px 0 0 white, 0 2px 0 white, -2px 0 0 white, 0 -2px 0 white;
 }
 
 .btn-attr-flower {
@@ -225,6 +224,10 @@ body {
 }
 
 // テーブル内の属性
+[type='checkbox'].filled-in:checked + span:not(.lever):after {
+  background-color: colors(shiny-main);
+}
+
 .scroll-table-wrapper {
   overflow-x: scroll;
 }
@@ -294,10 +297,8 @@ th {
 
 @mixin text-attr($attr-color) {
   color: colors($attr-color);
-  font-family: 'M PLUS Rounded 1c', sans-serif;
-  text-shadow: 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
-    0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white,
-    0 0 3px white, 0 0 3px white;
+  text-shadow: 1px 0 0 white, 1px 1px 0 white, 0 1px 0 white, -1px 1px 0 white, -1px 0 0 white, -1px -1px 0 white,
+    0 -1px 0 white, 1px -1px 0 white;
 }
 
 .text-attr-flower {
