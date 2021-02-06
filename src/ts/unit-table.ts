@@ -152,7 +152,7 @@ export class UnitTable {
     // ブランド表示
     switch (brand) {
       case '765AS':
-        brand = '765as'
+        brand = 'as765'
         break
       case 'シンデレラガールズ':
         brand = 'cinderella'

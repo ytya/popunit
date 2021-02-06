@@ -9,12 +9,15 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400&display=swap');
 @import '../../node_modules/materialize-css/sass/materialize.scss';
 
+$brand-list: as765, cinderella, million, sidem, shiny;
+$attr-list: flower, fire, snow, heaven, rainbow, light, ocean, darkness, sky, wind, moon, dream, thunder, star, love;
+
 $colors: (
-  765as-main: #eb5673,
-  765as-sub: #fcd7de,
+  as765-main: #eb5673,
+  as765-sub: #fcd7de,
   cinderella-main: #3a82c9,
   cinderella-sub: #d0e6f9,
-  //million-main: #f9c100,
+  //million-main: #f9c100, アイドル名の読みやすさ優先で色調整
   million-main: #f9a000,
   million-sub: #f3ecd2,
   //sidem-main: #47c299,
@@ -36,98 +39,64 @@ $colors: (
   attr-dream: #bbbfca,
   attr-thunder: #f9bd26,
   attr-star: #f8a000,
-  attr-love: #da4443
+  attr-love: #da4443,
+  attr-checked: #74a4fd,
+  attr-unchecked: #edeef4,
 );
 
 @function colors($key) {
   @return map-get($colors, $key);
 }
 
+//===========
 // ページ全体
+//===========
 body {
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }
-.label {
+label {
   font-size: 1rem;
+  color: black;
 }
 
-// ブランド
+//=============
+// ブランド選択
+//=============
 .col.col-brand {
   padding: 0.25rem;
 }
 
+// ブランドボタン
 .btn-brand {
+  @extend .btn-small;
   width: 100%;
   height: auto;
-  white-space: nowrap;
-  overflow: hidden;
+  white-space: nowrap; // 改行防止
+  overflow: hidden; // はみ出る場合は途切れさせる
   padding: 0.1rem;
   font-weight: bold;
-  text-transform: none;
+  text-transform: none; // SideM表記のために小文字許可
   user-select: none;
 }
 
-.check-brand:checked + .btn-brand-765as,
-.check-brand:not(:checked) + .btn-brand-765as:hover {
-  border: 2px solid colors(765as-main);
-  background-color: colors(765as-main);
-  color: white;
-}
-.check-brand:not(:checked) + .btn-brand-765as {
-  border: 2px solid colors(765as-main);
-  background-color: colors(765as-sub);
-  color: colors(765as-main);
-}
-
-.check-brand:checked + .btn-brand-cinderella,
-.check-brand:not(:checked) + .btn-brand-cinderella:hover {
-  border: 2px solid colors(cinderella-main);
-  background-color: colors(cinderella-main);
-  color: white;
-}
-.check-brand:not(:checked) + .btn-brand-cinderella {
-  border: 2px solid colors(cinderella-main);
-  background-color: colors(cinderella-sub);
-  color: colors(cinderella-main);
+// ブランドチェック状態（白文字 + メインカラー背景）
+@each $brand in $brand-list {
+  .check-brand:checked + .btn-brand-#{$brand},
+  .check-brand:not(:checked) + .btn-brand-#{$brand}:hover {
+    border: 2px solid colors(#{$brand}-main);
+    background-color: colors(#{$brand}-main);
+    color: white;
+  }
+  .check-brand:not(:checked) + .btn-brand-#{$brand} {
+    border: 2px solid colors(#{$brand}-main);
+    background-color: colors(#{$brand}-sub);
+    color: colors(#{$brand}-main);
+  }
 }
 
-.check-brand:checked + .btn-brand-million,
-.check-brand:not(:checked) + .btn-brand-million:hover {
-  border: 2px solid colors(million-main);
-  background-color: colors(million-main);
-  color: white;
-}
-.check-brand:not(:checked) + .btn-brand-million {
-  border: 2px solid colors(million-main);
-  background-color: colors(million-sub);
-  color: colors(million-main);
-}
-
-.check-brand:checked + .btn-brand-sidem,
-.check-brand:not(:checked) + .btn-brand-sidem:hover {
-  border: 2px solid colors(sidem-main);
-  background-color: colors(sidem-main);
-  color: white;
-}
-.check-brand:not(:checked) + .btn-brand-sidem {
-  border: 2px solid colors(sidem-main);
-  background-color: colors(sidem-sub);
-  color: colors(sidem-main);
-}
-
-.check-brand:checked + .btn-brand-shiny,
-.check-brand:not(:checked) + .btn-brand-shiny:hover {
-  border: 2px solid colors(shiny-main);
-  background-color: colors(shiny-main);
-  color: white;
-}
-.check-brand:not(:checked) + .btn-brand-shiny {
-  border: 2px solid colors(shiny-main);
-  background-color: colors(shiny-sub);
-  color: colors(shiny-main);
-}
-
-// 属性
+//=========
+// 属性選択
+//=========
 .flex-row {
   display: flex;
   align-items: center;
@@ -149,90 +118,53 @@ body {
 
 .check-attr:checked + .btn-attr,
 .check-attr:not(:checked) + .btn-attr:hover {
-  background-color: colors(shiny-main);
+  background-color: colors(attr-checked);
 }
 .check-attr:not(:checked) + .btn-attr {
-  background-color: #edeef4;
+  background-color: colors(attr-unchecked);
 }
 
-// .text-attr-back {
-//   font-size: 22px;
-//   stroke: white;
-//   stroke-width: 1px;
-// }
-// .text-attr-front {
-//   font-size: 22px;
-//   fill: colors(attr-flower);
-// }
-
 .btn-attr {
-  @extend .btn;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
+  @extend .btn-small;
+  width: 32.4px; // btn-smallの高さに合わせて正方形にする
   padding: 0 0;
   user-select: none;
   font-size: 20px;
   text-shadow: 1px 0 0 white, 1px 1px 0 white, 0 1px 0 white, -1px 1px 0 white, -1px 0 0 white, -1px -1px 0 white,
     0 -1px 0 white, 1px -1px 0 white, 2px 0 0 white, 0 2px 0 white, -2px 0 0 white, 0 -2px 0 white;
 }
-
-.btn-attr-flower {
-  color: colors(attr-flower);
-}
-.btn-attr-fire {
-  color: colors(attr-fire);
-}
-.btn-attr-snow {
-  color: colors(attr-snow);
-}
-.btn-attr-heaven {
-  color: colors(attr-heaven);
-}
-.btn-attr-rainbow {
-  color: colors(attr-rainbow);
-}
-.btn-attr-light {
-  color: colors(attr-light);
-}
-.btn-attr-ocean {
-  color: colors(attr-ocean);
-}
-.btn-attr-darkness {
-  color: colors(attr-darkness);
-}
-.btn-attr-sky {
-  color: colors(attr-sky);
-}
-.btn-attr-wind {
-  color: colors(attr-wind);
-}
-.btn-attr-moon {
-  color: colors(attr-moon);
-}
-.btn-attr-dream {
-  color: colors(attr-dream);
-}
-.btn-attr-thunder {
-  color: colors(attr-thunder);
-}
-.btn-attr-star {
-  color: colors(attr-star);
-}
-.btn-attr-love {
-  color: colors(attr-love);
+@each $attr in $attr-list {
+  .btn-attr-#{$attr} {
+    color: colors(attr-#{$attr});
+  }
 }
 
-// テーブル内の属性
+//================
+// ユニットテーブル
+//================
+// チェックボックスのテキスト位置合わせ
+// materialize-cssのデフォルトだとチェックボックスとテキストの水平が合わないためはずれるため
+[type='checkbox'].filled-in:checked + span:not(.lever):before,
+[type='checkbox'].filled-in:not(:checked) + span:not(.lever):after,
 [type='checkbox'].filled-in:checked + span:not(.lever):after {
-  background-color: colors(shiny-main);
+  top: 3px;
+}
+[type='checkbox'].filled-in:checked + span:not(.lever):after {
+  background-color: colors(attr-checked); // 属性の選択色とチェックボックスの色を合わせる
+}
+[type='checkbox'] + span:not(.lever) {
+  padding-left: 25px; // チェックボックスとテキストが離れすぎのため詰める
 }
 
+// 画面幅が狭い時に途切れないように横スクロールにする
 .scroll-table-wrapper {
   overflow-x: scroll;
 }
 .scroll-table {
   width: 100%;
+}
+.unit-table {
+  @extend .indigo, .lighten-5, .striped;
 }
 
 td,
@@ -240,6 +172,7 @@ th {
   padding: 0.8rem 0.5rem;
 }
 
+// アイドル名列はある程度の幅を確保、ステータスは詰める
 .th-idol {
   min-width: 10rem;
 }
@@ -247,20 +180,21 @@ th {
   min-width: 1rem;
 }
 
-.btn-th {
-  @extend .btn-flat, .btn-small;
-  background-color: none;
-  user-select: none;
-  font-size: 0.8rem;
+// テーブルヘッダーをボタン化
+.btn-th,
+.btn-th:hover {
+  @extend .btn-flat;
   white-space: nowrap;
   overflow: hidden;
   padding: 0 0;
-}
-.btn-th:hover {
-  @extend .btn-th;
-}
-.btn i.icon-sort {
+  background-color: none;
+  user-select: none;
   font-size: 0.8rem;
+}
+
+// ソート用の昇順・降順アイコン
+.btn-th i.icon-sort {
+  font-size: 0.8rem; // ボタン内のアイコンフォントサイズはmaterialize-cssで定義されているため上書き
 }
 .icon-sort-active {
   color: black;
@@ -269,80 +203,28 @@ th {
   color: lightgray;
 }
 
-.text-brand-765as {
-  color: colors(765as-main);
-}
-.text-brand-cinderella {
-  color: colors(cinderella-main);
-}
-.text-brand-million {
-  color: colors(million-main);
-}
-.text-brand-sidem {
-  color: colors(sidem-main);
-}
-.text-brand-shiny {
-  color: colors(shiny-main);
+// アイドル名をブランドカラーにする
+@each $brand in $brand-list {
+  .text-brand-#{$brand} {
+    color: colors(#{$brand}-main);
+  }
 }
 
+// 属性を楕円で囲む
 .text-attr-background {
   display: inline-block;
-  background-color: gainsboro;
   width: 3em;
   height: 2em;
   line-height: 2em;
   text-align: center;
   border-radius: 40%;
+  background-color: gainsboro;
 }
 
-@mixin text-attr($attr-color) {
-  color: colors($attr-color);
-  text-shadow: 1px 0 0 white, 1px 1px 0 white, 0 1px 0 white, -1px 1px 0 white, -1px 0 0 white, -1px -1px 0 white,
-    0 -1px 0 white, 1px -1px 0 white;
-}
-
-.text-attr-flower {
-  @include text-attr(attr-flower);
-}
-.text-attr-fire {
-  @include text-attr(attr-fire);
-}
-.text-attr-snow {
-  @include text-attr(attr-snow);
-}
-.text-attr-heaven {
-  @include text-attr(attr-heaven);
-}
-.text-attr-rainbow {
-  @include text-attr(attr-rainbow);
-}
-.text-attr-light {
-  @include text-attr(attr-light);
-}
-.text-attr-ocean {
-  @include text-attr(attr-ocean);
-}
-.text-attr-darkness {
-  @include text-attr(attr-darkness);
-}
-.text-attr-sky {
-  @include text-attr(attr-sky);
-}
-.text-attr-wind {
-  @include text-attr(attr-wind);
-}
-.text-attr-moon {
-  @include text-attr(attr-moon);
-}
-.text-attr-dream {
-  @include text-attr(attr-dream);
-}
-.text-attr-thunder {
-  @include text-attr(attr-thunder);
-}
-.text-attr-star {
-  @include text-attr(attr-star);
-}
-.text-attr-love {
-  @include text-attr(attr-love);
+@each $attr in $attr-list {
+  .text-attr-#{$attr} {
+    color: colors(attr-#{$attr});
+    text-shadow: 1px 0 0 white, 1px 1px 0 white, 0 1px 0 white, -1px 1px 0 white, -1px 0 0 white, -1px -1px 0 white,
+      0 -1px 0 white, 1px -1px 0 white;
+  }
 }

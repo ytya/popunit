@@ -14,23 +14,23 @@
     <div class="row">
       <div class="col col-brand s6 m4 l4 xl2 offset-xl1">
         <input type="checkbox" class="check-brand" value="765AS">
-        <label class="btn-small btn-brand btn-brand-765as" >アイドルマスター</label>
+        <label class="btn-brand btn-brand-as765" >アイドルマスター</label>
       </div>
       <div class="col col-brand s6 m4 l4 xl2">
         <input type="checkbox" class="check-brand" value="シンデレラガールズ">
-        <label class="btn-small btn-brand btn-brand-cinderella" >シンデレラガールズ</label>
+        <label class="btn-brand btn-brand-cinderella" >シンデレラガールズ</label>
       </div>
       <div class="col col-brand s6 m4 l4 xl2">
         <input type="checkbox" class="check-brand" value="ミリオンライブ">
-        <label class="btn-small btn-brand btn-brand-million" >ミリオンライブ</label>
+        <label class="btn-brand btn-brand-million" >ミリオンライブ</label>
       </div>
       <div class="col col-brand s6 m4 l4 xl2">
         <input type="checkbox" class="check-brand" value="SideM">
-        <label class="btn-small btn-brand btn-brand-sidem" >SideM</label>
+        <label class="btn-brand btn-brand-sidem" >SideM</label>
       </div>
       <div class="col col-brand s6 m4 l4 xl2">
         <input type="checkbox" class="check-brand" value="シャイニーカラーズ">
-        <label class="btn-small btn-brand btn-brand-shiny" >シャイニーカラーズ</label>
+        <label class="btn-brand btn-brand-shiny" >シャイニーカラーズ</label>
       </div>
     </div>
   </div>
@@ -43,9 +43,9 @@
   <!-- 属性選択 -->
   <% let attrs = [['flower', '花'], ['sky', '空'], ['fire', '炎'], ['wind', '風'],['snow', '雪'], ['moon', '月'],['heaven', '天'], ['dream', '夢'], ['rainbow', '虹'], ['thunder', '雷'], ['light', '光'], ['star', '星'], ['ocean', '海'], ['love', '愛'], ['darkness', '闇']] %>
   <div class="container flex-row">
-    <div class="text-attr">
+    <label class="text-attr">
       属性1
-    </div>
+    </label>
     <div class="flex-attr">
       <% for (let attr of attrs) { %>
         <div class="col-attr">
@@ -57,9 +57,9 @@
     </div>
   </div>
   <div class="container flex-row">
-    <div class="text-attr">
+    <label class="text-attr">
       属性2
-    </div>
+    </label>
     <div class="flex-attr">
       <% for (let attr of attrs) { %>
         <div class="col-attr">
@@ -70,9 +70,9 @@
     </div>
   </div>
   <div class="container flex-row">
-    <div class="text-attr">
+    <label class="text-attr">
       属性3
-    </div>
+    </label>
     <div class="flex-attr">
       <% for (let attr of attrs) { %>
         <div class="col-attr">
@@ -93,7 +93,7 @@
     </p>
   </div>
   <div class="container scroll-table-wrapper">
-    <table id="table-unit" class="scroll-table indigo lighten-5 striped">
+    <table id="table-unit" class="scroll-table unit-table">
     </table>
   </div>
 
