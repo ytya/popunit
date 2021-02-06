@@ -56,6 +56,7 @@ module.exports = (mode) => {
         }
       ],
     },
+
     plugins: [
       new HtmlWebpackPlugin({
         template: './src/index.ejs',

@@ -18,11 +18,11 @@ window.addEventListener('load', () => {
   const checkBrandSort = document.getElementById('check-brand-sort') as HTMLInputElement
   const tableUnit = document.getElementById('table-unit') as HTMLTableElement
 
-  // matelialize-css初期化
-  M.AutoInit()
-
   // テーブル初期化
   const unitTable = new UnitTable(tableUnit)
+
+  // matelialize-css初期化
+  M.AutoInit()
 
   // ブランド取得
   function getBrands() {
