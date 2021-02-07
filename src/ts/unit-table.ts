@@ -31,7 +31,7 @@ export class UnitTable {
 
   set isBrandSort(value: boolean) {
     this._isBrandSort = value
-    this._sort()
+    this._update()
   }
 
   _initThead(): void {
@@ -62,7 +62,7 @@ export class UnitTable {
           col.isSort = true
         }
         this._updateThead()
-        this._sort()
+        this._update()
       }
     }
   }
@@ -83,7 +83,7 @@ export class UnitTable {
     }
   }
 
-  _sort(): void {
+  _sort(): UnitInfo[] {
     let sort_key = COMPARE_KEY.NAME1
     let isReverse = false
     for (const [col_id, col] of this._columns.entries()) {
@@ -113,8 +113,7 @@ export class UnitTable {
       isReverse = col.isReverse
       break
     }
-    const units = this._idolDB.sortUnits(sort_key, this._isBrandSort, isReverse)
-    this._update(units)
+    return this._idolDB.sortUnits(sort_key, this._isBrandSort, isReverse)
   }
 
   _removeTbody(): void {
@@ -202,9 +201,7 @@ export class UnitTable {
     return `<td class="${td_class}">${cellValue}</td>`
   }
 
-  _update(units: UnitInfo[]): void {
-    this._removeTbody()
-
+  _renderTbody(units: UnitInfo[]): string {
     let tbody = '<tbody>'
     for (const unit of units) {
       let tr = '<tr>'
@@ -215,8 +212,24 @@ export class UnitTable {
       tbody += tr
     }
     tbody += '</tbody>'
+    return tbody
+  }
 
+  _update(): void {
+    const units = this._sort()
+
+    let tbody = this._renderTbody(units.slice(0, 100))
+    this._removeTbody()
     this._tableElem.insertAdjacentHTML('beforeend', tbody)
+
+    // 100件以上の場合は一度画面更新を挟んで全件表示
+    if (units.length > 100) {
+      setTimeout(() => {
+        tbody = this._renderTbody(units)
+        this._removeTbody()
+        this._tableElem.insertAdjacentHTML('beforeend', tbody)
+      }, 100)
+    }
   }
 
   /**
@@ -230,6 +243,16 @@ export class UnitTable {
    */
   public update(brands: string[], attr1: string, attr2: string, attr3: string): void {
     this._idolDB.collectUnits(brands, attr1, attr2, attr3)
-    this._sort()
+    this._update()
+  }
+
+  /**
+   * ユニット数取得
+   *
+   * @returns {number}
+   * @memberof UnitTable
+   */
+  public getUnitNum(): number {
+    return this._idolDB.getUnitNum()
   }
 }

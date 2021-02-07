@@ -16,6 +16,7 @@ window.addEventListener('load', () => {
 
   // アイドルテーブル
   const checkBrandSort = document.getElementById('check-brand-sort') as HTMLInputElement
+  const labelUnitNum = document.getElementById('label-unit-num') as HTMLLabelElement
   const tableUnit = document.getElementById('table-unit') as HTMLTableElement
 
   // テーブル初期化
@@ -52,6 +53,9 @@ window.addEventListener('load', () => {
     const attr2 = getAttr(checkAttrs2)
     const attr3 = getAttr(checkAttrs3)
     unitTable.update(brands, attr1, attr2, attr3)
+
+    // ユニット数
+    labelUnitNum.innerHTML = String(unitTable.getUnitNum()) + ' 件'
   }
 
   // ブランドボタンイベント

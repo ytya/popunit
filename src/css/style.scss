@@ -156,6 +156,10 @@ label {
   padding-left: 25px; // チェックボックスとテキストが離れすぎのため詰める
 }
 
+.label-unit-num {
+  margin-left: auto;
+}
+
 // 画面幅が狭い時に途切れないように横スクロールにする
 .scroll-table-wrapper {
   overflow-x: scroll;

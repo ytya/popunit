@@ -321,4 +321,14 @@ export class IdolDB {
     }
     return sortedUnits
   }
+
+  /**
+   * ユニット数取得
+   *
+   * @returns {number}
+   * @memberof IdolDB
+   */
+  public getUnitNum(): number {
+    return this._collectedUnits.length
+  }
 }
