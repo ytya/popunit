@@ -31,7 +31,7 @@ export class UnitTable {
 
   set isBrandSort(value: boolean) {
     this._isBrandSort = value
-    this._update()
+    this._renderTable()
   }
 
   _initThead(): void {
@@ -43,7 +43,7 @@ export class UnitTable {
       }
       thead += `<th col-id="${k}" class="${th_class}">${v.name}</th>`
     })
-    thead += '</tr></thead>'
+    thead += '</tr></thead><tbody></tbody>'
     this._tableElem.innerHTML = thead
 
     this._theadElem = this._tableElem.querySelector('thead tr') as HTMLTableRowElement
@@ -57,12 +57,13 @@ export class UnitTable {
           col.isReverse = !col.isReverse
         } else {
           for (const c of this._columns.values()) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             c.isSort = false
           }
           col.isSort = true
         }
         this._updateThead()
-        this._update()
+        this._renderTable()
       }
     }
   }
@@ -86,7 +87,8 @@ export class UnitTable {
   _sort(): UnitInfo[] {
     let sort_key = COMPARE_KEY.NAME1
     let isReverse = false
-    for (const [col_id, col] of this._columns.entries()) {
+    for (const [col_id, col] of this._columns) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (!col.isSort) {
         continue
       }
@@ -110,20 +112,15 @@ export class UnitTable {
           sort_key = COMPARE_KEY.VI
           break
       }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       isReverse = col.isReverse
       break
     }
     return this._idolDB.sortUnits(sort_key, this._isBrandSort, isReverse)
   }
 
-  _removeTbody(): void {
-    const tbody = this._tableElem.querySelector('tbody')
-    if (tbody) {
-      this._tableElem.removeChild(tbody)
-    }
-  }
-
   _renderCell(col_id: string, unit: UnitInfo): string {
+    // 列IDに応じて値を取得
     let cellValue = ''
     let attr = ''
     let brand = ''
@@ -177,24 +174,27 @@ export class UnitTable {
     }
 
     // 属性表示
-    attr = attr
-      .replace('花', '<span class="text-attr-flower">花</span>')
-      .replace('炎', '<span class="text-attr-fire">炎</span>')
-      .replace('雪', '<span class="text-attr-snow">雪</span>')
-      .replace('天', '<span class="text-attr-heaven">天</span>')
-      .replace('虹', '<span class="text-attr-rainbow">虹</span>')
-      .replace('光', '<span class="text-attr-light">光</span>')
-      .replace('海', '<span class="text-attr-ocean">海</span>')
-      .replace('闇', '<span class="text-attr-darkness">闇</span>')
-      .replace('空', '<span class="text-attr-sky">空</span>')
-      .replace('風', '<span class="text-attr-wind">風</span>')
-      .replace('月', '<span class="text-attr-moon">月</span>')
-      .replace('夢', '<span class="text-attr-dream">夢</span>')
-      .replace('雷', '<span class="text-attr-thunder">雷</span>')
-      .replace('星', '<span class="text-attr-star">星</span>')
-      .replace('愛', '<span class="text-attr-love">愛</span>')
-    if (attr != '') {
-      attr = `<span class="text-attr-background">${attr}</span>`
+    if (attr.length == 2) {
+      const attrMap: { [key: string]: string } = {
+        花: 'flower',
+        炎: 'fire',
+        雪: 'snow',
+        天: 'heaven',
+        虹: 'rainbow',
+        光: 'light',
+        海: 'ocean',
+        闇: 'darkness',
+        空: 'sky',
+        風: 'wind',
+        月: 'moon',
+        夢: 'dream',
+        雷: 'thunder',
+        星: 'star',
+        愛: 'love',
+      }
+      const attr1 = `<span class="text-attr-${attrMap[attr[0]]}">${attr[0]}</span>`
+      const attr2 = `<span class="text-attr-${attrMap[attr[1]]}">${attr[1]}</span>`
+      attr = `<span class="text-attr-background">${attr1}${attr2}</span>`
       cellValue = attr + ' ' + cellValue
     }
 
@@ -202,33 +202,31 @@ export class UnitTable {
   }
 
   _renderTbody(units: UnitInfo[]): string {
-    let tbody = '<tbody>'
+    const dst: string[] = []
     for (const unit of units) {
       let tr = '<tr>'
       for (const col_id of this._columns.keys()) {
         tr += this._renderCell(col_id, unit)
       }
       tr += '</tr>'
-      tbody += tr
+      dst.push(tr)
     }
-    tbody += '</tbody>'
-    return tbody
+    return dst.join('')
   }
 
-  _update(): void {
+  _renderTable(): void {
     const units = this._sort()
 
     let tbody = this._renderTbody(units.slice(0, 100))
-    this._removeTbody()
-    this._tableElem.insertAdjacentHTML('beforeend', tbody)
+    const tbodyElem = this._tableElem.querySelector('tbody') as HTMLElement
+    tbodyElem.innerHTML = tbody
 
     // 100件以上の場合は一度画面更新を挟んで全件表示
     if (units.length > 100) {
       setTimeout(() => {
-        tbody = this._renderTbody(units)
-        this._removeTbody()
-        this._tableElem.insertAdjacentHTML('beforeend', tbody)
-      }, 100)
+        tbody = this._renderTbody(units.slice(100))
+        tbodyElem.innerHTML += tbody
+      }, 150)
     }
   }
 
@@ -243,7 +241,7 @@ export class UnitTable {
    */
   public update(brands: string[], attr1: string, attr2: string, attr3: string): void {
     this._idolDB.collectUnits(brands, attr1, attr2, attr3)
-    this._update()
+    this._renderTable()
   }
 
   /**
