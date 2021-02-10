@@ -67,71 +67,51 @@ export class UnitInfo {
     return this._vi
   }
 
-  private compareBrand(other: UnitInfo, key: COMPARE_KEY): number {
-    if (key == COMPARE_KEY.NAME2) {
-      const o1 = BRAND_ORDER[this.idol2.brand]
-      const o2 = BRAND_ORDER[other.idol2.brand]
-      if (o1 < o2) {
-        return -1
-      } else if (o1 > o2) {
-        return 1
-      } else {
-        return 0
-      }
-    } else if (key == COMPARE_KEY.NAME3) {
-      const o1 = BRAND_ORDER[this.idol3.brand]
-      const o2 = BRAND_ORDER[other.idol3.brand]
-      if (o1 < o2) {
-        return -1
-      } else if (o1 > o2) {
-        return 1
-      } else {
-        return 0
-      }
+  private _compareBrand(brand1: string, brand2: string): number {
+    const o1 = BRAND_ORDER[brand1]
+    const o2 = BRAND_ORDER[brand2]
+    if (o1 < o2) {
+      return -1
+    } else if (o1 > o2) {
+      return 1
     } else {
-      const o1 = BRAND_ORDER[this.idol1.brand]
-      const o2 = BRAND_ORDER[other.idol1.brand]
-      if (o1 < o2) {
-        return -1
-      } else if (o1 > o2) {
-        return 1
-      } else {
-        return 0
-      }
+      return 0
     }
   }
 
-  private compareName(other: UnitInfo, key: COMPARE_KEY, isBrandCompare = false): number {
+  private _compareUnitBrand(other: UnitInfo, key: COMPARE_KEY): number {
+    if (key == COMPARE_KEY.NAME2) {
+      return this._compareBrand(this.idol2.brand, other.idol2.brand)
+    } else if (key == COMPARE_KEY.NAME3) {
+      return this._compareBrand(this.idol3.brand, other.idol3.brand)
+    } else {
+      return this._compareBrand(this.idol1.brand, other.idol1.brand)
+    }
+  }
+
+  private _compareName(name1: string, name2: string): number {
+    if (name1 < name2) {
+      return -1
+    } else if (name1 > name2) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+
+  private _compareUnitName(other: UnitInfo, key: COMPARE_KEY, isBrandCompare = false): number {
     if (isBrandCompare) {
-      const c = this.compareBrand(other, key)
+      const c = this._compareUnitBrand(other, key)
       if (c != 0) {
         return c
       }
     }
     if (key == COMPARE_KEY.NAME2) {
-      if (this.idol2.yomi < other.idol2.yomi) {
-        return -1
-      } else if (this.idol2.yomi > other.idol2.yomi) {
-        return 1
-      } else {
-        return 0
-      }
+      return this._compareName(this.idol2.yomi, other.idol2.yomi)
     } else if (key == COMPARE_KEY.NAME3) {
-      if (this.idol3.yomi < other.idol3.yomi) {
-        return -1
-      } else if (this.idol3.yomi > other.idol3.yomi) {
-        return 1
-      } else {
-        return 0
-      }
+      return this._compareName(this.idol3.yomi, other.idol3.yomi)
     } else {
-      if (this.idol1.yomi < other.idol1.yomi) {
-        return -1
-      } else if (this.idol1.yomi > other.idol1.yomi) {
-        return 1
-      } else {
-        return 0
-      }
+      return this._compareName(this.idol1.yomi, other.idol1.yomi)
     }
   }
 
@@ -145,37 +125,37 @@ export class UnitInfo {
    * @returns {number}
    * @memberof UnitInfo
    */
-  private compareUnitName(other: UnitInfo, key: COMPARE_KEY, isBrandCompare = false): number {
+  private _compareAllUnitName(other: UnitInfo, key: COMPARE_KEY, isBrandCompare = false): number {
     if (key == COMPARE_KEY.NAME2) {
-      const c1 = this.compareName(other, COMPARE_KEY.NAME2, isBrandCompare)
+      const c1 = this._compareUnitName(other, COMPARE_KEY.NAME2, isBrandCompare)
       if (c1 != 0) {
         return c1
       }
-      const c2 = this.compareName(other, COMPARE_KEY.NAME1, isBrandCompare)
+      const c2 = this._compareUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
       if (c2 != 0) {
         return c2
       }
-      return this.compareName(other, COMPARE_KEY.NAME3, isBrandCompare)
+      return this._compareUnitName(other, COMPARE_KEY.NAME3, isBrandCompare)
     } else if (key == COMPARE_KEY.NAME3) {
-      const c1 = this.compareName(other, COMPARE_KEY.NAME3, isBrandCompare)
+      const c1 = this._compareUnitName(other, COMPARE_KEY.NAME3, isBrandCompare)
       if (c1 != 0) {
         return c1
       }
-      const c2 = this.compareName(other, COMPARE_KEY.NAME1, isBrandCompare)
+      const c2 = this._compareUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
       if (c2 != 0) {
         return c2
       }
-      return this.compareName(other, COMPARE_KEY.NAME2, isBrandCompare)
+      return this._compareUnitName(other, COMPARE_KEY.NAME2, isBrandCompare)
     } else {
-      const c1 = this.compareName(other, COMPARE_KEY.NAME1, isBrandCompare)
+      const c1 = this._compareUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
       if (c1 != 0) {
         return c1
       }
-      const c2 = this.compareName(other, COMPARE_KEY.NAME2, isBrandCompare)
+      const c2 = this._compareUnitName(other, COMPARE_KEY.NAME2, isBrandCompare)
       if (c2 != 0) {
         return c2
       }
-      return this.compareName(other, COMPARE_KEY.NAME3, isBrandCompare)
+      return this._compareUnitName(other, COMPARE_KEY.NAME3, isBrandCompare)
     }
   }
 
@@ -193,14 +173,14 @@ export class UnitInfo {
       case COMPARE_KEY.NAME1:
       case COMPARE_KEY.NAME2:
       case COMPARE_KEY.NAME3:
-        return this.compareUnitName(other, key, isBrandCompare)
+        return this._compareAllUnitName(other, key, isBrandCompare)
       case COMPARE_KEY.VO:
         if (this.vo < other.vo) {
           return -1
         } else if (this.vo > other.vo) {
           return 1
         } else {
-          return this.compareUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
+          return this._compareAllUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
         }
       case COMPARE_KEY.DA:
         if (this.da < other.da) {
@@ -208,7 +188,7 @@ export class UnitInfo {
         } else if (this.da > other.da) {
           return 1
         } else {
-          return this.compareUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
+          return this._compareAllUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
         }
       default:
         if (this.vi < other.vi) {
@@ -216,7 +196,7 @@ export class UnitInfo {
         } else if (this.vi > other.vi) {
           return 1
         } else {
-          return this.compareUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
+          return this._compareAllUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
         }
     }
   }

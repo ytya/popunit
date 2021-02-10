@@ -23,7 +23,7 @@ module.exports = (mode) => {
         {
           // 拡張子 .ts の場合
           test: /\.ts$/,
-          // TypeScript をコンパイルする
+          exclude: /__tests__/,
           use: 'ts-loader',
         },
         {
