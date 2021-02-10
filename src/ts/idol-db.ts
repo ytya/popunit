@@ -36,11 +36,14 @@ export class UnitInfo {
   private _vo: number
   private _da: number
   private _vi: number
+  private _idString: string
 
   constructor(private _idol1: IdolInfo, private _idol2: IdolInfo, private _idol3: IdolInfo) {
     this._vo = _idol1.vo + _idol2.vo + _idol3.vo
     this._da = _idol1.da + _idol2.da + _idol3.da
     this._vi = _idol1.vi + _idol2.vi + _idol3.vi
+    const names = [_idol1.name, _idol2.name, _idol3.name]
+    this._idString = names.sort().join('')
   }
 
   get idol1(): IdolInfo {
@@ -65,6 +68,10 @@ export class UnitInfo {
 
   get vi(): number {
     return this._vi
+  }
+
+  get idString(): string {
+    return this._idString
   }
 
   private _compareBrand(brand1: string, brand2: string): number {
@@ -253,7 +260,7 @@ export class IdolDB {
     const height3 = df3.dim()[0]
 
     // 全組み合わせを取得
-    const unitData: UnitInfo[] = []
+    const unitData = new Map<string, UnitInfo>()
     for (let i = 0; i < height1; i++) {
       const idol1 = df1.getRow(i).toDict() as IdolInfo
       for (let j = 0; j < height2; j++) {
@@ -270,13 +277,20 @@ export class IdolDB {
             continue
           }
 
-          // ユニット追加
-          unitData.push(new UnitInfo(idol1, idol2, idol3))
+          // 重複は除去してユニット追加
+          const unit = new UnitInfo(idol1, idol2, idol3)
+          const existUnit = unitData.get(unit.idString)
+          if (existUnit === undefined) {
+            unitData.set(unit.idString, unit)
+          } else if (existUnit.compare(unit, COMPARE_KEY.NAME1, false) > 0) {
+            // 名前昇順ユニットを優先
+            unitData.set(unit.idString, unit)
+          }
         }
       }
     }
-    this._collectedUnits = unitData
-    return unitData
+    this._collectedUnits = Array.from(unitData.values())
+    return this._collectedUnits
   }
 
   /**
