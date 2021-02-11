@@ -5,13 +5,13 @@ import idolData from './idol-data.json'
 // [{"brand": "765AS", "name": "天海春香", "yomi": "あまみ はるか", "attr": "花海", "vo": 90, "da": 70, "vi": 80}]
 
 export interface IdolInfo {
-  name: string
-  yomi: string
-  brand: string
-  attr: string
-  vo: number
-  da: number
-  vi: number
+  name: string // 名前
+  yomi: string // 読み仮名
+  brand: string // ブランド
+  attr: string // 属性(ex.花光)
+  vo: number // Vocal
+  da: number // Dance
+  vi: number // Visual
 }
 
 export const COMPARE_KEY = {
@@ -24,6 +24,7 @@ export const COMPARE_KEY = {
 }
 export type COMPARE_KEY = typeof COMPARE_KEY[keyof typeof COMPARE_KEY]
 
+// ブランドでソートする際の順番
 const BRAND_ORDER: { [key: string]: number } = {
   '765AS': 0,
   シンデレラガールズ: 1,
@@ -32,11 +33,17 @@ const BRAND_ORDER: { [key: string]: number } = {
   シャイニーカラーズ: 4,
 }
 
+/**
+ * ユニット
+ *
+ * @export
+ * @class UnitInfo
+ */
 export class UnitInfo {
   private _vo: number
   private _da: number
   private _vi: number
-  private _idString: string
+  private _idString: string // 同一ユニットを判定するためのID
 
   constructor(private _idol1: IdolInfo, private _idol2: IdolInfo, private _idol3: IdolInfo) {
     this._vo = _idol1.vo + _idol2.vo + _idol3.vo
@@ -74,9 +81,9 @@ export class UnitInfo {
     return this._idString
   }
 
-  private _compareBrand(brand1: string, brand2: string): number {
-    const o1 = BRAND_ORDER[brand1]
-    const o2 = BRAND_ORDER[brand2]
+  private _compareBrand(idol1: IdolInfo, idol2: IdolInfo): number {
+    const o1 = BRAND_ORDER[idol1.brand]
+    const o2 = BRAND_ORDER[idol2.brand]
     if (o1 < o2) {
       return -1
     } else if (o1 > o2) {
@@ -86,83 +93,90 @@ export class UnitInfo {
     }
   }
 
-  private _compareUnitBrand(other: UnitInfo, key: COMPARE_KEY): number {
+  private _compareIdolBrand(other: UnitInfo, key: COMPARE_KEY): number {
+    // N番目のアイドルのブランドを比較
     if (key == COMPARE_KEY.NAME2) {
-      return this._compareBrand(this.idol2.brand, other.idol2.brand)
+      return this._compareBrand(this.idol2, other.idol2)
     } else if (key == COMPARE_KEY.NAME3) {
-      return this._compareBrand(this.idol3.brand, other.idol3.brand)
+      return this._compareBrand(this.idol3, other.idol3)
     } else {
-      return this._compareBrand(this.idol1.brand, other.idol1.brand)
+      return this._compareBrand(this.idol1, other.idol1)
     }
   }
 
-  private _compareName(name1: string, name2: string): number {
-    if (name1 < name2) {
+  private _compareName(idol1: IdolInfo, idol2: IdolInfo): number {
+    // 読み仮名で比較
+    if (idol1.yomi < idol2.yomi) {
       return -1
-    } else if (name1 > name2) {
+    } else if (idol1.yomi > idol2.yomi) {
       return 1
     } else {
       return 0
     }
   }
 
-  private _compareUnitName(other: UnitInfo, key: COMPARE_KEY, isBrandCompare = false): number {
+  private _compareIdolName(other: UnitInfo, key: COMPARE_KEY, isBrandCompare = false): number {
+    // まずはブランドで比較
     if (isBrandCompare) {
-      const c = this._compareUnitBrand(other, key)
+      const c = this._compareIdolBrand(other, key)
       if (c != 0) {
         return c
       }
     }
+
+    // N番目のアイドル名で比較
     if (key == COMPARE_KEY.NAME2) {
-      return this._compareName(this.idol2.yomi, other.idol2.yomi)
+      return this._compareName(this.idol2, other.idol2)
     } else if (key == COMPARE_KEY.NAME3) {
-      return this._compareName(this.idol3.yomi, other.idol3.yomi)
+      return this._compareName(this.idol3, other.idol3)
     } else {
-      return this._compareName(this.idol1.yomi, other.idol1.yomi)
+      return this._compareName(this.idol1, other.idol1)
     }
   }
 
   /**
-   * ユニット名比較
+   * ユニットに所属するアイドル名で比較
    *
    * @private
-   * @param {UnitInfo} other
-   * @param {COMPARE_KEY} key - 比較するkey
+   * @param {UnitInfo} other - 比較対象
+   * @param {COMPARE_KEY} key - 比較するkey(NAME1, NAME2, NAME3以外を指定した場合はNAME1で比較)
    * @param {boolean} [isBrandCompare=false] - ブランド比較をするか
    * @returns {number}
    * @memberof UnitInfo
    */
-  private _compareAllUnitName(other: UnitInfo, key: COMPARE_KEY, isBrandCompare = false): number {
+  private _compareAllIdolName(other: UnitInfo, key: COMPARE_KEY, isBrandCompare = false): number {
     if (key == COMPARE_KEY.NAME2) {
-      const c1 = this._compareUnitName(other, COMPARE_KEY.NAME2, isBrandCompare)
+      // まずは指定されたkeyで比較
+      const c1 = this._compareIdolName(other, COMPARE_KEY.NAME2, isBrandCompare)
       if (c1 != 0) {
         return c1
       }
-      const c2 = this._compareUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
+      // 指定keyで同等だった場合はNAME1, NAME2, NAME3の順番に比較
+      const c2 = this._compareIdolName(other, COMPARE_KEY.NAME1, isBrandCompare)
       if (c2 != 0) {
         return c2
       }
-      return this._compareUnitName(other, COMPARE_KEY.NAME3, isBrandCompare)
+      return this._compareIdolName(other, COMPARE_KEY.NAME3, isBrandCompare)
     } else if (key == COMPARE_KEY.NAME3) {
-      const c1 = this._compareUnitName(other, COMPARE_KEY.NAME3, isBrandCompare)
+      const c1 = this._compareIdolName(other, COMPARE_KEY.NAME3, isBrandCompare)
       if (c1 != 0) {
         return c1
       }
-      const c2 = this._compareUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
+      const c2 = this._compareIdolName(other, COMPARE_KEY.NAME1, isBrandCompare)
       if (c2 != 0) {
         return c2
       }
-      return this._compareUnitName(other, COMPARE_KEY.NAME2, isBrandCompare)
+      return this._compareIdolName(other, COMPARE_KEY.NAME2, isBrandCompare)
     } else {
-      const c1 = this._compareUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
+      const c1 = this._compareIdolName(other, COMPARE_KEY.NAME1, isBrandCompare)
       if (c1 != 0) {
         return c1
       }
-      const c2 = this._compareUnitName(other, COMPARE_KEY.NAME2, isBrandCompare)
+      const c2 = this._compareIdolName(other, COMPARE_KEY.NAME2, isBrandCompare)
       if (c2 != 0) {
         return c2
       }
-      return this._compareUnitName(other, COMPARE_KEY.NAME3, isBrandCompare)
+      return this._compareIdolName(other, COMPARE_KEY.NAME3, isBrandCompare)
     }
   }
 
@@ -180,14 +194,16 @@ export class UnitInfo {
       case COMPARE_KEY.NAME1:
       case COMPARE_KEY.NAME2:
       case COMPARE_KEY.NAME3:
-        return this._compareAllUnitName(other, key, isBrandCompare)
+        // 名前で比較
+        return this._compareAllIdolName(other, key, isBrandCompare)
       case COMPARE_KEY.VO:
+        // ステータスで比較して同等だったら名前で比較
         if (this.vo < other.vo) {
           return -1
         } else if (this.vo > other.vo) {
           return 1
         } else {
-          return this._compareAllUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
+          return this._compareAllIdolName(other, COMPARE_KEY.NAME1, isBrandCompare)
         }
       case COMPARE_KEY.DA:
         if (this.da < other.da) {
@@ -195,7 +211,7 @@ export class UnitInfo {
         } else if (this.da > other.da) {
           return 1
         } else {
-          return this._compareAllUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
+          return this._compareAllIdolName(other, COMPARE_KEY.NAME1, isBrandCompare)
         }
       default:
         if (this.vi < other.vi) {
@@ -203,7 +219,7 @@ export class UnitInfo {
         } else if (this.vi > other.vi) {
           return 1
         } else {
-          return this._compareAllUnitName(other, COMPARE_KEY.NAME1, isBrandCompare)
+          return this._compareAllIdolName(other, COMPARE_KEY.NAME1, isBrandCompare)
         }
     }
   }
@@ -216,12 +232,12 @@ export class UnitInfo {
  * @class IdolDB
  */
 export class IdolDB {
-  // 大元のアイドルデータ
-  private static readonly _dfIdol = new DataFrame(idolData, null)
-  private _collectedUnits: UnitInfo[] = []
+  private static readonly _dfIdol = new DataFrame(idolData, null) // 大元のアイドルデータ
+  private _collectedUnits: UnitInfo[] = [] // ユニット一覧
 
   /**
    * アイドル選択
+   * ヒットしなかった場合は空行を1行作成する
    *
    * @param {string[]} brands - 選択するブランド名のリスト（空の場合は全ブランド）
    * @param {string} attr - 選択する属性
@@ -229,6 +245,12 @@ export class IdolDB {
    * @memberof IdolDB
    */
   public selectIdol(brands: string[], attr: string): DataFrame {
+    // 属性が指定されなかった場合は空行
+    if (attr.length == 0) {
+      return new DataFrame([['', '', '', '', 0, 0, 0]], IdolDB._dfIdol.listColumns())
+    }
+
+    // 検索
     let df = IdolDB._dfIdol.filter((row: Row) => {
       if (brands.length != 0 && !brands.includes(row.get('brand') as string)) {
         return false

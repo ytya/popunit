@@ -43,7 +43,7 @@ window.addEventListener('load', () => {
         return checkAttrs[i].value
       }
     }
-    return '-'
+    return ''
   }
 
   // アイドルリスト更新
