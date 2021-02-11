@@ -10,7 +10,7 @@
     "check-types": "tsc --noEmit",
     "eslint": "eslint src/**/*.ts",
     "eslint:fix": "eslint src/**/*.ts --fix",
-    "format": "prettier --write 'src/**/*.{js,ts.json}'",
+    "format": "prettier --write 'src/**/*.{js,ts}'",
     "lint": "npm-run-all eslint check-types",
     "lint:fix": "npm-run-all eslint:fix check-types format"
   },
@@ -23,6 +23,7 @@
     "@typescript-eslint/eslint-plugin": "^4.14.2",
     "@typescript-eslint/parser": "^4.14.2",
     "css-loader": "^5.0.1",
+    "csv": "^5.3.2",
     "eslint": "^7.19.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-import": "^2.22.1",

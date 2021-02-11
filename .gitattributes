@@ -28,6 +28,7 @@
 *.js              text
 *.json            text
 *.jsx             text
+*.mjs             text
 *.less            text
 *.ls              text
 *.map             text -diff
