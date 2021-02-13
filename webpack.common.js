@@ -35,7 +35,7 @@ module.exports = (mode) => {
               loader: "css-loader",
               options: {
                 // オプションでCSS内のurl()メソッドの取り込みを禁止する
-                url: false,
+S                url: false,
                 // ソースマップの利用有無
                 sourceMap: enabledSourceMap,
 
@@ -60,7 +60,8 @@ module.exports = (mode) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: './src/index.ejs',
-        filename: path.resolve(__dirname, 'dist', 'index.html')
+        filename: path.resolve(__dirname, 'dist', 'index.html'),
+        hash: true
       }),
       new MiniCssExtractPlugin()
     ],

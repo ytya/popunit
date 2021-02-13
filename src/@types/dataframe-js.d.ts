@@ -54,7 +54,7 @@ declare module 'dataframe-js' {
 
     // leftJoin(dfToJoin: any, columnNames: any): any;
 
-    // listColumns(): any;
+    listColumns(): string[]
 
     // map(func: any): any;
 
