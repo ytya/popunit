@@ -3,6 +3,8 @@
 PopUnit はスマートフォンゲーム「[ポップリンクス](https://poplinks.idolmaster-official.jp/)」の
 ユニット結成を補助するためのサイトです。
 
+![thumbnail](./.github/thumbnail.png)
+
 ## Prerequisites
 
 - node >= 14.15.0

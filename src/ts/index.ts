@@ -55,7 +55,7 @@ window.addEventListener('load', () => {
     unitTable.update(brands, attr1, attr2, attr3)
 
     // ユニット数
-    labelUnitNum.innerHTML = String(unitTable.getUnitNum()) + ' 件'
+    labelUnitNum.innerHTML = String(unitTable.getUnitNum()) + ' 組'
   }
 
   // ブランドボタンイベント
