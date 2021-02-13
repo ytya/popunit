@@ -35,7 +35,7 @@ module.exports = (mode) => {
               loader: "css-loader",
               options: {
                 // オプションでCSS内のurl()メソッドの取り込みを禁止する
-S                url: false,
+                url: false,
                 // ソースマップの利用有無
                 sourceMap: enabledSourceMap,
 
