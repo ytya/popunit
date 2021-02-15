@@ -19,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@types/gtag.js": "0.0.4",
     "@types/jest": "^26.0.20",
     "@types/materialize-css": "^1.0.8",
     "@typescript-eslint/eslint-plugin": "^4.14.2",

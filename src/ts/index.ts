@@ -1,6 +1,7 @@
 import M from 'materialize-css'
 import '../css/style.scss'
 import { UnitTable } from './unit-table'
+import { GAEvent } from './gaevent'
 
 // onLoad
 window.addEventListener('load', () => {
@@ -48,11 +49,15 @@ window.addEventListener('load', () => {
 
   // アイドルリスト更新
   const updateUnit = () => {
+    // ユニットテーブル更新
     const brands = getBrands()
     const attr1 = getAttr(checkAttrs1)
     const attr2 = getAttr(checkAttrs2)
     const attr3 = getAttr(checkAttrs3)
     unitTable.update(brands, attr1, attr2, attr3)
+
+    // GAイベント発火
+    GAEvent.updateTable(brands, attr1, attr2, attr3)
 
     // ユニット数
     labelUnitNum.innerHTML = String(unitTable.getUnitNum()) + ' 組'
