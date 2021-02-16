@@ -1,6 +1,7 @@
 var path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyFilePlugin = require('copy-webpack-plugin');
 
 module.exports = (mode) => {
   const enabledSourceMap = mode == "development";  // 
@@ -63,7 +64,12 @@ module.exports = (mode) => {
         filename: path.resolve(__dirname, 'dist', 'index.html'),
         hash: true
       }),
-      new MiniCssExtractPlugin()
+      new MiniCssExtractPlugin(),
+      new CopyFilePlugin({
+        patterns: [
+          { from: "./src/image", to: "./image" }
+        ]
+      })
     ],
     // import 文で .ts ファイルを解決するため
     // これを定義しないと import 文で拡張子を書く必要が生まれる。
