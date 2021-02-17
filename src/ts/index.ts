@@ -1,7 +1,9 @@
 import M from 'materialize-css'
+import SlimSelect from 'slim-select'
 import '../css/style.scss'
 import { UnitTable } from './unit-table'
 import { GAEvent } from './gaevent'
+import idolData from './idol-data.json'
 
 // onLoad
 window.addEventListener('load', () => {
@@ -47,6 +49,11 @@ window.addEventListener('load', () => {
     return ''
   }
 
+  // 絞り込み検索ワード取得
+  const getRefineWords = (): string[] => {
+    return slimSelect.selected() as string[]
+  }
+
   // アイドルリスト更新
   const updateUnit = () => {
     // ユニットテーブル更新
@@ -54,10 +61,11 @@ window.addEventListener('load', () => {
     const attr1 = getAttr(checkAttrs1)
     const attr2 = getAttr(checkAttrs2)
     const attr3 = getAttr(checkAttrs3)
-    unitTable.update(brands, attr1, attr2, attr3)
+    const refineWords = getRefineWords()
+    unitTable.update(brands, attr1, attr2, attr3, refineWords)
 
     // GAイベント発火
-    GAEvent.updateTable(brands, attr1, attr2, attr3)
+    GAEvent.updateTable(brands, attr1, attr2, attr3, refineWords)
 
     // ユニット数
     labelUnitNum.innerHTML = String(unitTable.getUnitNum()) + ' 組'
@@ -102,4 +110,57 @@ window.addEventListener('load', () => {
   checkBrandSort.onclick = () => {
     unitTable.isBrandSort = checkBrandSort.checked
   }
+
+  // 絞り込み検索
+  const idolOptions: { [key: string]: { text: string; value: string }[] } = {
+    '765AS': [],
+    シンデレラガールズ: [],
+    ミリオンライブ: [],
+    SideM: [],
+    シャイニーカラーズ: [],
+  }
+  for (const idol of idolData) {
+    // slim-selectのバグのため、valueを明示的に設定
+    idolOptions[idol.brand].push({ text: idol.name, value: idol.name })
+  }
+  const attrOptions: { text: string; value: string }[] = []
+  for (const attr of ['花', '空', '炎', '風', '雪', '月', '天', '夢', '虹', '雷', '光', '星', '海', '愛', '闇']) {
+    attrOptions.push({ text: attr, value: attr })
+  }
+  const slimSelect = new SlimSelect({
+    select: '#select-refine-search',
+    placeholder: '絞り込み',
+    showSearch: true, // shows search field
+    searchText: 'No Results',
+    addToBody: true,
+    onChange: (info) => {
+      updateUnit()
+    },
+    data: [
+      {
+        label: '属性',
+        options: attrOptions,
+      },
+      {
+        label: '765AS',
+        options: idolOptions['765AS'],
+      },
+      {
+        label: 'シンデレラガールズ',
+        options: idolOptions['シンデレラガールズ'],
+      },
+      {
+        label: 'ミリオンライブ',
+        options: idolOptions['ミリオンライブ'],
+      },
+      {
+        label: 'SideM',
+        options: idolOptions['SideM'],
+      },
+      {
+        label: 'シャイニーカラーズ',
+        options: idolOptions['シャイニーカラーズ'],
+      },
+    ],
+  })
 })

@@ -8,6 +8,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400&display=swap');
 @import './materialize.scss';
+@import '../../node_modules/slim-select/dist/slimselect.css';
 
 $brand-list: as765, cinderella, million, sidem, shiny;
 $attr-list: flower, fire, snow, heaven, rainbow, light, ocean, darkness, sky, wind, moon, dream, thunder, star, love;
@@ -142,6 +143,10 @@ label {
 //================
 // ユニットテーブル
 //================
+.col.col-cond {
+  padding: 0.25rem;
+}
+
 // チェックボックスのテキスト位置合わせ
 // materialize-cssのデフォルトだとチェックボックスとテキストの水平が合わないためはずれるため
 [type='checkbox'].filled-in:checked + span:not(.lever):before,
@@ -156,8 +161,15 @@ label {
   padding-left: 25px; // チェックボックスとテキストが離れすぎのため詰める
 }
 
+// 絞り込み検索
+.select-refine-search {
+  width: 100%;
+}
+
+// ユニット組数
 .label-unit-num {
-  margin-left: auto;
+  text-align: right;
+  display: block;
 }
 
 // 画面幅が狭い時に途切れないように横スクロールにする

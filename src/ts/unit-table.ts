@@ -6,12 +6,24 @@ interface Column {
   isReverse: boolean
 }
 
+/**
+ * 検索条件に応じてユニットテーブルを描画
+ * // TODO: tableは件数が多くなると更新に時間がかかるので、paginationするか非table要素で描画する
+ *
+ * @export
+ * @class UnitTable
+ */
 export class UnitTable {
   private _idolDB: IdolDB
-  private _columns: Map<string, Column>
-  private _theadElem: HTMLTableRowElement
-  private _isBrandSort: boolean
+  private _columns: Map<string, Column> // 列設定
+  private _theadElem: HTMLTableRowElement // thead要素
+  private _isBrandSort: boolean // ブランドソートするか
 
+  /**
+   * Creates an instance of UnitTable.
+   * @param {HTMLTableElement} _tableElem - 制御するtable要素
+   * @memberof UnitTable
+   */
   constructor(private _tableElem: HTMLTableElement) {
     this._idolDB = new IdolDB()
     this._columns = new Map([
@@ -237,10 +249,11 @@ export class UnitTable {
    * @param {string} attr1 - 一人目の属性
    * @param {string} attr2 - 二人目の属性
    * @param {string} attr3 - 三人目の属性
+   * @param {string[]} [refineWords=[]] - 絞り込み検索ワード
    * @memberof UnitTable
    */
-  public update(brands: string[], attr1: string, attr2: string, attr3: string): void {
-    this._idolDB.collectUnits(brands, attr1, attr2, attr3)
+  public update(brands: string[], attr1: string, attr2: string, attr3: string, refineWords: string[] = []): void {
+    this._idolDB.collectUnits(brands, attr1, attr2, attr3, refineWords)
     this._renderTable()
   }
 

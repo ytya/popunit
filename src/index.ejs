@@ -110,17 +110,30 @@
     </div>
   </div>
 
-  <!-- ユニットテーブル -->
-  <div class="container flex-row" style="margin-top: 1rem;">
-    <div>
-      <label>
-        <input type="checkbox" id="check-brand-sort" class="filled-in" />
-        <span>ブランドソート</span>
-      </label>
+  <div class="container" style="margin-top: 1rem;">
+    <div class="row">
+      <!-- 絞り込み検索 -->
+      <div class="col col-cond s12 m6 l7 xl8">
+        <select id="select-refine-search" class="select-refine-search no-autoinit" multiple>
+        </select>
+      </div>
+      <!-- ブランドソート -->
+      <div class="col col-cond s6 m4 l3 xl3">
+        <label>
+          <input type="checkbox" id="check-brand-sort" class="filled-in" />
+          <span>ブランドソート</span>
+        </label>
+      </div>
+      <!-- 組数表示 -->
+      <div class="col col-cond s6 m2 l2 xl1">
+        <label id="label-unit-num" class="label-unit-num">
+          0 組
+        </label>
+      </div>
     </div>
-    <label id="label-unit-num" class="label-unit-num">
-    </label>
   </div>
+
+  <!-- ユニットテーブル -->
   <div class="container scroll-table-wrapper">
     <table id="table-unit" class="scroll-table unit-table">
     </table>

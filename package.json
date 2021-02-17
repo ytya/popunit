@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "dataframe-js": "^1.4.4",
-    "materialize-css": "^1.0.0"
+    "materialize-css": "^1.0.0",
+    "slim-select": "^1.27.0"
   }
 }

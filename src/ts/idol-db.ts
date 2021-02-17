@@ -236,6 +236,50 @@ export class IdolDB {
   private _collectedUnits: UnitInfo[] = [] // ユニット一覧
 
   /**
+   * 絞り込み検索
+   * 検索ワード全てが含まれる場合にtrueを返す
+   *
+   * @private
+   * @param {string[]} refineWords - 絞り込み検索ワード
+   * @param {IdolInfo[]} idols - アイドル情報
+   * @returns {boolean}
+   * @memberof IdolDB
+   */
+  private _checkRefineWords(refineWords: string[], idols: IdolInfo[]): boolean {
+    if (refineWords.length == 0) {
+      return true
+    }
+
+    // アイドル情報に検索ワードが含まれるかチェック
+    const checkWord = (word: string): boolean => {
+      if (word.length == 1) {
+        // 属性
+        for (const idol of idols) {
+          if (idol.attr.includes(word)) {
+            return true
+          }
+        }
+      } else {
+        // アイドル名
+        for (const idol of idols) {
+          if (idol.name == word) {
+            return true
+          }
+        }
+      }
+      return false
+    }
+
+    // 全ワードで検索
+    for (const word of refineWords) {
+      if (!checkWord(word)) {
+        return false
+      }
+    }
+    return true
+  }
+
+  /**
    * アイドル選択
    * ヒットしなかった場合は空行を1行作成する
    *
@@ -270,10 +314,17 @@ export class IdolDB {
    * @param {string} attr1 - 一人目の属性
    * @param {string} attr2 - 二人目の属性
    * @param {string} attr3 - 三人目の属性
+   * @param {string[]} [refineWords=[]] - 絞り込み検索ワード
    * @returns {UnitInfo[]}
    * @memberof IdolDB
    */
-  public collectUnits(brands: string[], attr1: string, attr2: string, attr3: string): UnitInfo[] {
+  public collectUnits(
+    brands: string[],
+    attr1: string,
+    attr2: string,
+    attr3: string,
+    refineWords: string[] = [],
+  ): UnitInfo[] {
     const df1 = this.selectIdol(brands, attr1)
     const df2 = this.selectIdol(brands, attr2)
     const df3 = this.selectIdol(brands, attr3)
@@ -292,10 +343,16 @@ export class IdolDB {
         }
         for (let k = 0; k < height3; k++) {
           const idol3 = df3.getRow(k).toDict() as IdolInfo
+          // 同じアイドルが重複する場合は除去
           if (idol3.name != '' && (idol1.name == idol3.name || idol2.name == idol3.name)) {
             continue
           }
           if (idol1.name == '' && idol2.name == '' && idol3.name == '') {
+            continue
+          }
+
+          // 絞り込み検索
+          if (!this._checkRefineWords(refineWords, [idol1, idol2, idol3])) {
             continue
           }
 
