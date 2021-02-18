@@ -111,3 +111,29 @@ test('IdolDB.collectUnits', () => {
     expect(units.length).toBe(n)
   }
 })
+
+test('IdolDB.collectUnits refineWords', () => {
+  const db = new IdolDB()
+
+  // 「月」属性アイドルの人数取得
+  const df = db.selectIdol([], '月')
+  const n = df.dim()[0]
+
+  {
+    // 「星井美希」は確定で「月」属性アイドルのみの3人ユニット(n-1C2)
+    const units = db.collectUnits([], '月', '月', '月', ['星井美希'])
+    expect(units.length).toBe(((n - 1) * (n - 2)) / 2)
+  }
+
+  {
+    // 「星井美希」は確定で「月」属性アイドルのみの2人ユニット(n-1C1)
+    const units = db.collectUnits([], '月', '', '月', ['星井美希'])
+    expect(units.length).toBe(n - 1)
+  }
+
+  {
+    // 「星井美希」は確定で「月」属性アイドルのみの1人ユニット(1)
+    const units = db.collectUnits([], '', '月', '', ['星井美希'])
+    expect(units.length).toBe(1)
+  }
+})
