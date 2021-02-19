@@ -253,6 +253,6 @@ th {
   background-color: white;
 }
 
-.github-icon {
-  padding: 4px 4px 0 0;
+.footer-color {
+  @extend .grey-text, .darken-2;
 }

@@ -37,6 +37,9 @@
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
 
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/be86c7bb32.js" crossorigin="anonymous"></script>
+
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -142,14 +145,30 @@
   <!-- footer -->
   <footer class="page-footer">
     <div class="container">
-      <div class="right valign-wrapper">
-        <a class="github-icon" href="https://github.com/ytya/popunit">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+      <div class="right footer-color">
+        <a class="footer-color modal-trigger" href="#model-privacy-policy">PrivacyPolicy</a> / 
+        <a class="footer-color" href="https://twitter.com/ytyatwtr" target="_blank" rel="noreferrer">Contact</a> / 
+        <a class="footer-color" href="https://github.com/ytya/popunit" target="_blank" rel="noreferrer">
+          <i class="fab fa-github no-autoinit"></i>   GitHub
         </a>
-        <a class="right grey-text darken-2" href="https://github.com/ytya/popunit/issues">Bug Report</a>
       </div>
     </div>
   </footer>
+
+  <!-- Privacy Policy -->
+  <div id="model-privacy-policy" class="modal .modal-close">
+    <div class="modal-content">
+      <h5>プライバシーポリシー</h5>
+      <p>
+        本サイトでは、利用状況の確認のためアクセス解析ツール「Google Analytics」を使用しています。
+        Google AnalyticsではCookieを使用してデータの収集を行っており、それらのデータはGoogleのプライバシーポリシーに基づいて管理されます。
+        なお、データは匿名で収集されており個人を特定するものではありません。<br>
+
+        Google AnalyticsはCookieを無効にしたり、<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noreferrer">Google社によるオプトアウトアドオン</a>を使用することで停止できます。
+        Google Analyticsの利用規約及びプライバシーポリシーに関する詳細は<a href="https://marketingplatform.google.com/about/analytics/terms/jp/" target="_blank" rel="noreferrer">Google アナリティクス利用規約</a>や<a href="https://policies.google.com/technologies/ads?hl=ja" target="_blank" rel="noreferrer">Googleポリシーと規約</a>をご覧ください。
+      </p>
+    </div>
+  </div>
 
   </body>
 </html>
