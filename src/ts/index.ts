@@ -29,7 +29,7 @@ window.addEventListener('load', () => {
   M.AutoInit()
 
   // ブランド取得
-  function getBrands() {
+  const getBrands = (): string[] => {
     const brands: string[] = new Array<string>()
     for (let i = 0; i < checkBrands.length; i++) {
       if (checkBrands[i].checked) {
@@ -51,7 +51,7 @@ window.addEventListener('load', () => {
 
   // 絞り込み検索ワード取得
   const getRefineWords = (): string[] => {
-    return slimSelect.selected() as string[]
+    return refineSelect.selected() as string[]
   }
 
   // アイドルリスト更新
@@ -112,7 +112,20 @@ window.addEventListener('load', () => {
   }
 
   // 絞り込み検索
-  const idolOptions: { [key: string]: { text: string; value: string }[] } = {
+  interface RefineOptionData {
+    text: string
+    value: string
+    yomi: string
+  }
+  const compareRefineOption = (a: RefineOptionData, b: RefineOptionData): number => {
+    if (a.yomi < b.yomi) {
+      return -1
+    } else if (a.yomi > b.yomi) {
+      return 1
+    }
+    return 0
+  }
+  const idolOptions: { [key: string]: RefineOptionData[] } = {
     '765AS': [],
     シンデレラガールズ: [],
     ミリオンライブ: [],
@@ -121,13 +134,13 @@ window.addEventListener('load', () => {
   }
   for (const idol of idolData) {
     // slim-selectのバグのため、valueを明示的に設定
-    idolOptions[idol.brand].push({ text: idol.name, value: idol.name })
+    idolOptions[idol.brand].push({ text: idol.name, value: idol.name, yomi: idol.yomi })
   }
   const attrOptions: { text: string; value: string }[] = []
   for (const attr of ['花', '空', '炎', '風', '雪', '月', '天', '夢', '虹', '雷', '光', '星', '海', '愛', '闇']) {
     attrOptions.push({ text: attr, value: attr })
   }
-  const slimSelect = new SlimSelect({
+  const refineSelect = new SlimSelect({
     select: '#select-refine-search',
     placeholder: '絞り込み',
     showSearch: true, // shows search field
@@ -143,23 +156,23 @@ window.addEventListener('load', () => {
       },
       {
         label: '765AS',
-        options: idolOptions['765AS'],
+        options: idolOptions['765AS'].sort(compareRefineOption),
       },
       {
         label: 'シンデレラガールズ',
-        options: idolOptions['シンデレラガールズ'],
+        options: idolOptions['シンデレラガールズ'].sort(compareRefineOption),
       },
       {
         label: 'ミリオンライブ',
-        options: idolOptions['ミリオンライブ'],
+        options: idolOptions['ミリオンライブ'].sort(compareRefineOption),
       },
       {
         label: 'SideM',
-        options: idolOptions['SideM'],
+        options: idolOptions['SideM'].sort(compareRefineOption),
       },
       {
         label: 'シャイニーカラーズ',
-        options: idolOptions['シャイニーカラーズ'],
+        options: idolOptions['シャイニーカラーズ'].sort(compareRefineOption),
       },
     ],
   })
