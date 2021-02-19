@@ -235,6 +235,7 @@ th {
   text-align: center;
   border-radius: 40%;
   background-color: gainsboro;
+  user-select: none;
 }
 
 @each $attr in $attr-list {
