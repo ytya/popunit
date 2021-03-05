@@ -2,7 +2,7 @@
   "compilerOptions": {
     "sourceMap": true,
     "target": "es5",
-    "module": "es2015",
+    "module": "commonjs",
     "outDir": "dist",
 
     "lib": [
@@ -12,11 +12,10 @@
     "types": ["node", "jest"],
     "strict": true,
     "importHelpers": true,
-    "experimentalDecorators": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "downlevelIteration": true
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }
