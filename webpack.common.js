@@ -2,6 +2,7 @@ var path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyFilePlugin = require('copy-webpack-plugin');
+const SitemapPlugin = require('sitemap-webpack-plugin').default;
 
 module.exports = (mode) => {
   const enabledSourceMap = mode == "development";  // 
@@ -69,6 +70,15 @@ module.exports = (mode) => {
         patterns: [
           { from: "./src/image", to: "./image" }
         ]
+      }),
+      new SitemapPlugin({
+        base: 'https://ytya.github.io',
+        paths: ['/popunit/'],
+        options: {
+          filename: 'sitemap.xml',
+          lastmod: true,
+          changefreq: 'monthly'
+        }
       })
     ],
     // import 文で .ts ファイルを解決するため
